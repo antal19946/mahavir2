@@ -6,7 +6,7 @@ const planSchema = new mongoose.Schema({
     package_type: {
         package_name: {
             type: String,
-            unique:true,
+            unique: true,
             default: "Starter"
         },
         package_type: {
@@ -35,9 +35,9 @@ const planSchema = new mongoose.Schema({
         }
     },
     level_income: {
-        status:{
-            type:String,
-            default:0
+        status: {
+            type: Number,
+            default: 0
         },
         income_type: {
             options: {
@@ -356,68 +356,68 @@ const planSchema = new mongoose.Schema({
             default: 0
         }
     },
-    difference_income:{
-        status:{
-            type:Number,
-            default:1
+    difference_income: {
+        status: {
+            type: Number,
+            default: 1
         },
-       ranks:
-    {
-        type:Array,
-        default:[
-            {
-              "min_investment": 2000,
-              "max_investment": 4999,
-              "value": 5
-            },
-            {
-              "min_investment": 5000,
-              "max_investment": 10999,
-              "value": 7
-            },
-            {
-              "min_investment": 11000,
-              "max_investment": 24999,
-              "value": 9
-            },
-            {
-              "min_investment": 25000,
-              "max_investment": 59999,
-              "value": 11
-            },
-            {
-              "min_investment": 60000,
-              "max_investment": 124999,
-              "value": 13
-            },
-            {
-              "min_investment": 125000,
-              "max_investment": 269999,
-              "value": 16
-            },
-            {
-              "min_investment": 270000,
-              "max_investment": 499999,
-              "value": 19
-            },
-            {
-              "min_investment": 600000,
-              "max_investment": 1499999,
-              "value": 22
-            },
-            {
-              "min_investment": 1500000,
-              "max_investment": 3999999,
-              "value": 27
-            },
-            {
-              "min_investment": 4000000,
-              "max_investment": 1000000000,
-              "value": 31
-            }
-          ]
-    }
-       
+        ranks:
+        {
+            type: Array,
+            default: [
+                {
+                    "min_investment": 2000,
+                    "max_investment": 4999,
+                    "value": 5
+                },
+                {
+                    "min_investment": 5000,
+                    "max_investment": 10999,
+                    "value": 7
+                },
+                {
+                    "min_investment": 11000,
+                    "max_investment": 24999,
+                    "value": 9
+                },
+                {
+                    "min_investment": 25000,
+                    "max_investment": 59999,
+                    "value": 11
+                },
+                {
+                    "min_investment": 60000,
+                    "max_investment": 124999,
+                    "value": 13
+                },
+                {
+                    "min_investment": 125000,
+                    "max_investment": 269999,
+                    "value": 16
+                },
+                {
+                    "min_investment": 270000,
+                    "max_investment": 499999,
+                    "value": 19
+                },
+                {
+                    "min_investment": 600000,
+                    "max_investment": 1499999,
+                    "value": 22
+                },
+                {
+                    "min_investment": 1500000,
+                    "max_investment": 3999999,
+                    "value": 27
+                },
+                {
+                    "min_investment": 4000000,
+                    "max_investment": 1000000000,
+                    "value": 31
+                }
+            ]
+        }
+
     }
 })
 const plan = new mongoose.model('plan', planSchema)

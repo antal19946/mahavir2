@@ -55,7 +55,7 @@ router.post('/register', async (req, res) => {
     res.json( result )
 })
 router.post('/is_sponsor_exist', async (req, res) => {
-    const result = await User.sponsor(req.body.user_Id)
+    const result = await User.isSponsorExist(req.body.sponsor)
     res.json( result )
 })
 router.post('/address_to_id', async (req, res) => {

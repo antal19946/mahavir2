@@ -10,7 +10,10 @@ const transectionSchema = new mongoose.Schema({
         type:String
     },
     tx_Id:{
-        type:String
+        type:Number
+    },
+    order_Id:{
+        type:Number
     },
     tx_type:{
         type:String

@@ -93,19 +93,37 @@ class user {
     }
     
   };
-  async sponsor(sponsor_Id) {
+  async isSponsorExist(sponsor){
+    const sponsor_Data = await UserData.findOne({ user_name: sponsor })
+    if (sponsor_Data) {
+      return ({
+        status: true,
+        sponsor_Id: sponsor_Data.user_Id,
+      });
+    } else {
+      return(
+        {
+          status: false,
+          sponsor_Data,
+        }
+      )
+    }
+    
+  }
+  async sponsor(sponsor) {
     this.getAdvance();
     const { is_sponsor_active_required } = this.advance.Registration;
-    const sponsor_Data = await UserData.findOne({ user_Id: sponsor_Id })
+    const sponsor_Data = await UserData.findOne({ user_name: sponsor })
+    // console.log(sponsor_Data)
     if (sponsor_Data) {
       if (is_sponsor_active_required.value === "yes") {
         if (sponsor_Data.status == 1) {
-          return ({ status: true, sponsor_Id, name: sponsor_Data.name })
+          return ({ status: true, sponsor_Id:sponsor_Data.user_Id, name: sponsor_Data.name })
         } else {
           return ({ status: false, message: "sponsor not active" })
         }
       } else {
-        return ({ status: true, sponsor_Id, name: sponsor_Data.name })
+        return ({ status: true, sponsor_Id:sponsor_Data.user_Id, name: sponsor_Data.name })
       }
     } else {
       return ({ status: false, message: "Invalid sponsor", sponsor_Data })
@@ -123,11 +141,11 @@ class user {
   async register(body) {
     try {
       const { is_mobile_required,is_email_required } = this.advance.Registration;
-      const { name, email, mobile, password, sponsor_Id,user_name } = body;
+      const { name, email, mobile, password, sponsor,user_name } = body;
       const velidUserName = await this.generateUserName(user_name);
-      const isEmail = await this.isEmail(email);
+      const isEmail = await is_email_required.value=="yes"? this.isEmail(email):{status:true};
       const isMobile = await is_mobile_required.value=="yes"? this.isMobile(mobile):{status:true};
-      const sponsor_Data = await this.sponsor(sponsor_Id);
+      const sponsor_Data = await this.sponsor(sponsor);
       const isexist = await UserData.findOne({ user_name: velidUserName.userName });
       const isStrongPassword = await this.generatePassword(password);
       const total_users = await UserData.find().count()
@@ -153,7 +171,7 @@ class user {
           password: await hashPassword(isStrongPassword.password),
           user_name: velidUserName.userName,
           user_Id:(total_users+1),
-          sponsor_Id,
+          sponsor_Id:sponsor_Data.sponsor_Id,
           sponsor_Name: sponsor_Data.name,
           joining_date: new Date()
         });
@@ -199,8 +217,8 @@ class user {
     }
   }
   async Login(body) {
-    const { user_Id, password } = body
-    const UserDetail = await UserData.findOne({ user_Id })
+    const { user_name, password } = body
+    const UserDetail = await UserData.findOne({ user_name })
     try {
       if (UserDetail) {
         const comparePassword = await bcrypt.compare(password, UserDetail.password)

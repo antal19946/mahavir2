@@ -2,7 +2,7 @@ const {
   levelDistribution,
 } = require("../../Controller/commans/levelDistribution");
 const { saveOrder } = require("../../Controller/commans/order");
-const { Transection } = require("../../Controller/commans/transection");
+const { Transection } = require("../../controller/commans/saveTransections");
 const EpinData = require("../../Modals/Pin");
 const UserData = require("../../Modals/Users");
 const advance_info = require("../../Modals/advanceInfo");
@@ -67,7 +67,7 @@ class buy {
                 is_used: 1,
               }
             );
-            await saveOrder({
+            const order =  await saveOrder({
               user_Id: user_Id,
               source: "pin",
               tx_type: purchase_type,
@@ -81,7 +81,8 @@ class buy {
                 activateUser.user_Id,
                 100,
                 pinDetails.package_type.max_amount,
-                pinDetails
+                pinDetails,
+                order.order_Id
               );
             }
             if (pinDetails.difference_income.status == 1) {
@@ -89,7 +90,8 @@ class buy {
                 user_Id,
                 1000000,
                 pinDetails.package_type.max_amount,
-                pinDetails
+                pinDetails,
+                order.order_Id
               );
             }
             return { status: true };
@@ -144,18 +146,8 @@ class buy {
                 { user_Id: userSession },
                 { "fund_wallet.value": Wallet.fund_wallet.value - amount }
               );
-              Transection({
-                user_Id: userSession,
-                to_from: user_Id,
-                tx_type: purchase_type,
-                debit_credit: "debit",
-                source: purchase_type,
-                wallet_type: "fund_wallet",
-                amount,
-                status: 1,
-                remark: `Debited ${amount} for ${purchase_type} package by ${user_Id}`,
-              });
-              await saveOrder({
+             
+              const order =  await saveOrder({
                 user_Id: user_Id,
                 source: "fund",
                 tx_type: purchase_type,
@@ -164,20 +156,34 @@ class buy {
                 status: 1,
                 remark: null,
               });
+              const tarnsection = await Transection({
+                user_Id: userSession,
+                to_from: user_Id,
+                order_Id:order.order_Id,
+                tx_type: purchase_type,
+                debit_credit: "debit",
+                source: purchase_type,
+                wallet_type: "fund_wallet",
+                amount,
+                status: 1,
+                remark: `Debited ${amount} for ${purchase_type} package by ${user_Id}`,
+              });
               if (packageDetails.level_income.status == 1) {
                 await levelDistribution.levelIncome(
                   user_Id,
                   100,
                   amount,
-                  packageDetails
+                  packageDetails,
+                  order.order_Id
                 );
               }
-              if (packageDetails.level_income.status == 1) {
+              if (packageDetails.difference_income.status == 1) {
                 await diffrenc.level_distribution(
                     user_Id,
                     1000000,
                     amount,
-                    packageDetails
+                    packageDetails,
+                    order.order_Id
                   );
               }
               return { status: true };

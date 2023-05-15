@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 // const config = require('config')
-const dbName = "vfIndia"
+const dbName = "mahavir"
 const uri = `mongodb://0.0.0.0:27017/${dbName}`
 mongoose.set("strictQuery", false);
 mongoose.connect(uri,{

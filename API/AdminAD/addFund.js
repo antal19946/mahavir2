@@ -1,5 +1,5 @@
-const { Transection } = require("../../Controller/commans/transection");
 const userWallet = require("../../Modals/userWallet");
+const { Transection } = require("../../controller/commans/saveTransections");
 
 class Funds{
     async addFund(body){
