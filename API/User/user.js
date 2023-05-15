@@ -140,14 +140,14 @@ class user {
   }
   async register(body) {
     try {
-      const { is_mobile_required,is_email_required } = this.advance.Registration;
+      const { is_mobile_required,is_email_required,is_password_required } = this.advance.Registration;
       const { name, email, mobile, password, sponsor,user_name } = body;
       const velidUserName = await this.generateUserName(user_name);
       const isEmail = await is_email_required.value=="yes"? this.isEmail(email):{status:true};
       const isMobile = await is_mobile_required.value=="yes"? this.isMobile(mobile):{status:true};
       const sponsor_Data = await this.sponsor(sponsor);
       const isexist = await UserData.findOne({ user_name: velidUserName.userName });
-      const isStrongPassword = await this.generatePassword(password);
+      const isStrongPassword =is_password_required.value=="yes"? await this.generatePassword(password):{status:true};
       const total_users = await UserData.find().count()
       const Error = await (
         !isMobile.status
@@ -168,7 +168,7 @@ class user {
           name,
           email,
           mobile,
-          password: await hashPassword(isStrongPassword.password),
+          password:is_password_required.value=="yes"? await hashPassword(isStrongPassword?.password):password,
           user_name: velidUserName.userName,
           user_Id:(total_users+1),
           sponsor_Id:sponsor_Data.sponsor_Id,
@@ -217,11 +217,12 @@ class user {
     }
   }
   async Login(body) {
+    const { is_password_required } = this.advance.Registration;
     const { user_name, password } = body
     const UserDetail = await UserData.findOne({ user_name })
     try {
       if (UserDetail) {
-        const comparePassword = await bcrypt.compare(password, UserDetail.password)
+        const comparePassword = is_password_required.value=="yes"? await bcrypt.compare(password, UserDetail.password):true;
         if (UserDetail && comparePassword) {
           const accessToken = await generateToken(UserDetail.user_Id)
           return ({

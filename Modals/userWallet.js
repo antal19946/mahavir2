@@ -40,7 +40,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,
@@ -73,10 +73,10 @@ const user_wallet = new mongoose.Schema({
          default:null
        }
      },
-     total_payout:{
+     total_income:{
         name:{
          type:String,
-         default:"Total Payout"
+         default:"Total Income"
         },
         wallet_type:{
          type:String,
@@ -106,7 +106,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,
@@ -128,7 +128,7 @@ const user_wallet = new mongoose.Schema({
       },
       wallet_status:{
        type:Number,
-       default:1
+       default:0
       },
       value:{
        type:Number,
@@ -176,11 +176,11 @@ const user_wallet = new mongoose.Schema({
         },
         count_in_main_wallet:{
          type:Number,
-         default:1
+         default:0
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,
@@ -258,7 +258,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,

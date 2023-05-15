@@ -14,6 +14,7 @@ const { Crons } = require("../Controller/crons");
 const { Package } = require("../API/AdminAD/package");
 const { Admin } = require("../API/AdminAD/admin");
 const diff = require("../controller/diffDistribution");
+const { homeData } = require("../API/User/homeData");
 var router = express.Router();
 var jsonParser = bodyParser.json();
 router.use(jsonParser)
@@ -63,16 +64,30 @@ router.post('/address_to_id', async (req, res) => {
     res.json( result )
 })
 router.post('/login', async (req, res) => {
-    const advance = await User.Login(req.body)
-    res.json({ advance })
+    const result = await User.Login(req.body)
+    res.json({ result })
 })
 router.get('/get_profile', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
         const verification = await verifyToken(Authorization_Token);
         if (verification.status) {
-            const Profile = await User.getProfile(verification.resp.user_Id)
-            res.json({ status: true, Profile });
+            const result = await User.getProfile(verification.resp.user_Id)
+            res.json({ status: true, result });
+        } else {
+            res.json({ verification });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+})
+router.get('/get_wallet', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const verification = await verifyToken(Authorization_Token);
+        if (verification.status) {
+            const result = await homeData.getWallet(verification.resp.user_Id)
+            res.json({ status: true, result });
         } else {
             res.json({ verification });
         }
