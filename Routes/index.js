@@ -95,6 +95,20 @@ router.get('/get_wallet', async (req, res) => {
         res.json({ status: false, message: "Failed to authenticate token." });
     }
 })
+router.get('/self_investment', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const verification = await verifyToken(Authorization_Token);
+        if (verification.status) {
+            const result = await homeData.getSelfInvestment(verification.resp.user_Id)
+            res.json({ status: true, result });
+        } else {
+            res.json({ verification });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+})
 router.post('/update_profile', upload.single('file'), async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     let fileName = req?.file?.filename;

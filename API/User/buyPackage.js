@@ -124,7 +124,7 @@ class buy {
         amount >= packageDetails.package_type.min_amount &&
         amount <= packageDetails.package_type.max_amount
       ) {
-        if (Wallet.fund_wallet.value >= amount) {
+        if (Wallet?.fund_wallet.value >= amount) {
           const user = await UserData.findOne({ user_Id });
           if (user) {
             if (
