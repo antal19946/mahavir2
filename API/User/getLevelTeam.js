@@ -1,9 +1,22 @@
 const UserData = require("../../Modals/Users");
+const { homeData } = require("./homeData");
 const { User } = require("./user");
 
 class Team{
     constructor(){
-
+        // this.getDirectTeam(1).then(e=>console.log(e))
+    }
+    async getDirectTeam(user_Id){
+        const level_1 = await UserData.find({sponsor_Id:user_Id});
+        const direct=[];
+        for (let index = 0; index < level_1.length; index++) {
+            let{user_Id,user_name,status,joining_date,Activation_date,sponsor_Id}=level_1[index]
+            const profile = await User.getProfile(sponsor_Id)
+            const getInvest = await homeData.getSelfInvestment(user_Id)
+            const update = {user_Id,user_name,status,joining_date,Activation_date,investment:getInvest,sponsor:profile.user_name};
+            direct.push(update)
+        }
+        return direct;
     }
     async getLevelTeam(user_Id,level){
         const level_team = []

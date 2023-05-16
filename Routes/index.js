@@ -132,6 +132,22 @@ router.get('/get_level_team', async (req, res) => {
     }
 
 })
+router.get('/get_direct_team', async (req, res) => {
+
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const verification = await verifyToken(Authorization_Token);
+        if (verification.status) {
+            const result = await Teams.getDirectTeam(verification.resp.user_Id)
+            res.json({ status: true, result });
+        } else {
+            res.json({ verification });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+
+})
 router.post('/create_package', async (req, res) => {
     const advance = await Package.createPackage(req.body)
     res.json({ advance })
@@ -161,10 +177,13 @@ router.post('/buy_package', async (req, res) => {
             // res.json({advance})
             if (advance.Investment.topup_type.value == "pin") {
                 const activateUser = await Buy.topupWithPin(verification.resp.user_Id, req.body)
-                res.json({ activateUser });
-            } else {
+                res.json( activateUser );
+            } else if(advance.Investment.topup_type.value == "fund") {
                 const activateUser = await Buy.topupWithFund(verification.resp.user_Id, req.body)
-                res.json({ activateUser });
+                res.json( activateUser );
+            } else if(advance.Investment.topup_type.value == "dap") {
+                const activateUser = await Buy.topupWithDap(verification.resp.user_Id, req.body)
+                res.json( activateUser );
             }
         } else {
             res.json({ verification });
@@ -173,6 +192,20 @@ router.post('/buy_package', async (req, res) => {
         res.json({ status: false, message: "Failed to authenticate token." });
     }
 
+})
+router.post('/confirm_order', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const verification = await verifyToken(Authorization_Token);
+        if (verification.status) {
+            const result = await Buy.confirmOrder(verification.resp.user_Id,req.body)
+            res.json({ status: true, result });
+        } else {
+            res.json({ verification });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
 })
 router.post('/roi_closing', async (req, res) => {
     const advance = await Crons.roi_closing()

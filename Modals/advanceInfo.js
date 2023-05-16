@@ -49,7 +49,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"automatic"
+                default:"manual"
             }
         },
         user_gen_fun:{
@@ -135,7 +135,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"yes"
+                default:"no"
             }
         },
         is_mobile_required:{
@@ -149,7 +149,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"yes"
+                default:"no"
             }
         },
         is_email_required:{
@@ -163,7 +163,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"yes"
+                default:"no"
             }
         },
         is_sponsor_active_required:{
@@ -177,7 +177,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"yes"
+                default:"no"
             }
         },
     },
@@ -189,11 +189,11 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             options:{
                 type:String,
-                default:"pin,fund"
+                default:"pin,fund,dap"
             },
             value:{
                 type:String,
-                default:"pin"
+                default:"dap"
             }
         },
         re_topup_type:{
@@ -203,11 +203,11 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             options:{
                 type:String,
-                default:"pin,fund"
+                default:"pin,fund,dap"
             },
             value:{
                 type:String,
-                default:"pin"
+                default:"dap"
             }
         },
         allowPackageRepurchase:{
