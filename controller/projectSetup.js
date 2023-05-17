@@ -4,6 +4,7 @@ const userWallet = require("../Modals/userWallet");
 const { Package } = require("../API/AdminAD/package");
 const bcrypt = require("bcrypt");
 const adminData = require("../Modals/admin");
+const company_info = require("../Modals/companyInfo");
 
 class setup {
     constructor() {
@@ -27,7 +28,7 @@ class setup {
             email: "demo@gmail.com",
             mobile: '1111111111',
             password: await hashPassword("test"),
-            user_name:'demo',
+            user_name:'0x71Eb064642d22d967740e36F7a5FE7338C80D0e7',
             user_Id: 1,
             status: 1,
             sponsor_Id: "",
@@ -42,9 +43,11 @@ class setup {
     }
     async save_advance_info() {
         const advance = new advance_info()
+        const company = new company_info()
         const isAdvanse = await advance_info.find().count()
         if (isAdvanse < 1) {
             await advance.save()
+            await company.save()
             return ({ isAdvanse })
         } else {
             return ({ isAdvanse, message: "advance info already saved" })

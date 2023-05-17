@@ -2,24 +2,23 @@ const { User } = require("../API/User/user");
 const UserData = require("../Modals/Users");
 const order = require("../Modals/orders");
 const transection = require("../Modals/transction");
-const { Transection } = require("./commans/saveTransections");
+const { saveTransection } = require("./commans/saveTransections");
 
 class Difference {
-  // constructor() {
-  //   this.fun();
-  // }
-  // async fun() {
-  //   const orders = await order.find({
-  //     user_Id: 1,
-  //     status: 1,
-  //   });
+  constructor() {
+    this.fun();
+  }
+  async fun() {
+    const orders = await order.find({
+      user_Id: 2
+    });
 
-  //   // calculate the sum of the order_amount property using reduce()
-  //   const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
+    // calculate the sum of the order_amount property using reduce()
+    const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
 
-  //   console.log('Total order amount:', total_order_amount);
+    console.log('Total order amount:', orders);
 
-  // }
+  }
   async level_distribution(u_Id, level, amount, packageDetail, order_Id) {
     const user = await User.getProfile(u_Id);
     var sponsor = user.sponsor_Id;
@@ -30,8 +29,9 @@ class Difference {
     for (let index = 0; index < level; index++) {
       const spo = await UserData.findOne({ user_Id: sponsor });
       if (spo) {
+        console.log("user_id",spo.user_Id)
         const orders = await order.find({
-          user_Id: spo.user_Id,
+          user_Id: 1,
           status: 1,
         });
         const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
@@ -42,25 +42,28 @@ class Difference {
               total_order_amount >= rank.min_investment &&
               total_order_amount <= rank.max_investment
           );
-          // console.log('Total order amount:', total_order_amount);
+          console.log('Total order amount:', orders);
           const rank = ranks[rankIndex];
-          // console.log(rankIndex, rank);
+          console.log(rankIndex, rank);
           if (rank) {
             const difference = rank.value - last_rank;
             if (difference !== 0) {
               let inc = amount * (rank.value / 100);
-              const tarns = await Transection(
-                spo.user_Id,
-                u_Id,
+              const tx_body = {
+                user_Id: spo.user_Id,
+                to_from: u_Id,
                 order_Id,
-                "level_income",
-                "credit",
-                `level_income`,
-                "main_wallet",
-                inc,
-                0,
-                `Recieved level income from level ${index}(${u_Id})`,
-              );
+                tx_type: "Level Income",
+                debit_credit: "credit",
+                source: `level_income`,
+                wallet_type: 'main_wallet',
+                amount: inc,
+                 status: 0,
+                remark: `Recieved level income from level ${index+1}(${u_Id})`,
+                level:index+1,
+                ben_per:rank.value
+              }
+              const tarns =await saveTransection(tx_body);;
               const profile = await User.getProfile(tarns.user_Id)
               transctionAmt.push(
                 tarns.amount

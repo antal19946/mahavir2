@@ -16,9 +16,9 @@ class Auth{
     verifyToken(auth){
      return jwt.verify(auth,secrateKey, function (err, resp) {
             if (err) {
-              return{status:false, err}
+              return{tokenStatus:false, err}
             }else{
-                return {status:true, resp}
+                return {tokenStatus:true, resp}
             }
         }
         )

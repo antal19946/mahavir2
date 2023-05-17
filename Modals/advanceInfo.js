@@ -225,6 +225,16 @@ const advanceInfoSchema = new mongoose.Schema({
             }
         }
         
+    },
+    withdrawal:{
+        min_withdrawal:{
+            type:Number,
+            default:10
+        },
+        max_withdrawal:{
+            type:Number,
+            default:1e10
+        }
     }
    
    

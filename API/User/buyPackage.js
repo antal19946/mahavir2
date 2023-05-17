@@ -2,7 +2,7 @@ const {
   levelDistribution,
 } = require("../../Controller/commans/levelDistribution");
 const { saveOrder } = require("../../Controller/commans/order");
-const { Transection } = require("../../controller/commans/saveTransections");
+const { saveTransection } = require("../../controller/commans/saveTransections");
 const EpinData = require("../../Modals/Pin");
 const UserData = require("../../Modals/Users");
 const advance_info = require("../../Modals/advanceInfo");
@@ -10,9 +10,12 @@ const plan = require("../../Modals/plan");
 const userWallet = require("../../Modals/userWallet");
 const diffrenc = require("../../controller/diffDistribution");
 const order = require("../../Modals/orders");
+const transection = require("../../Modals/transction");
 
 class buy {
-  constructor() { }
+  constructor() {
+    
+  }
   async activeDirect(sponsor_Id) {
     const active_direct = await UserData.find({
       sponsor_Id,
@@ -157,7 +160,7 @@ class buy {
                 status: 1,
                 remark: null,
               });
-              const tarnsection = await Transection({
+              const tx_body = {
                 user_Id: userSession,
                 to_from: user_Id,
                 order_Id: order.order_Id,
@@ -168,7 +171,9 @@ class buy {
                 amount,
                 status: 1,
                 remark: `Debited ${amount} for ${purchase_type} package by ${user_Id}`,
-              });
+              }
+              const tarns = await saveTransection(tx_body);
+
               if (packageDetails.level_income.status == 1) {
                 await levelDistribution.levelIncome(
                   user_Id,
@@ -206,7 +211,7 @@ class buy {
   }
   async topupWithDap(userSession, body) {
     const { Investment } = await advance_info.findOne();
-    const { package_name,  amount } = body;
+    const { package_name, amount } = body;
     const packageDetails = await plan.findOne({
       "package_type.package_name": package_name,
       "package_type.status": 1,
@@ -229,26 +234,26 @@ class buy {
             status: 0,
             remark: null,
           });
-          
-            // const Tran = await levelDistribution.levelIncome(
-            //   userSession,
-            //   100,
-            //   amount,
-            //   packageDetails,
-            //   order.order_Id
-            // );
-            const Tran = await diffrenc.level_distribution(
-              userSession,
-              1000000,
-              amount,
-              packageDetails,
-              order.order_Id
-            );
-            
-          
+
+          // const Tran = await levelDistribution.levelIncome(
+          //   userSession,
+          //   100,
+          //   amount,
+          //   packageDetails,
+          //   order.order_Id
+          // );
+          const Tran = await diffrenc.level_distribution(
+            userSession,
+            1000000,
+            amount,
+            packageDetails,
+            order.order_Id
+          );
+
+
           return { status: true, order_Id: order.order_Id, transections: Tran };
-        } 
-      }else {
+        }
+      } else {
         return { status: false, message: "Invalid amount" };
       }
 
@@ -256,14 +261,30 @@ class buy {
       return { status: false, message: "can't find this type of package" };
     }
   }
-  async confirmOrder(userSession,body){
-    const {order_Id,tx_hash}=body
-    const pending_order = await order.findOneAndUpdate({user_Id:userSession,order_Id},{status:1,tx_hash});
-    if (pending_order) {
-      return {status:true}
-    } else {
-      return{status:false}
+
+  async confirmOrder(userSession, body) {
+    const { order_Id, tx_hash } = body
+    try {
+      const pending_order = await order.findOne({ user_Id: userSession, order_Id, status: 0 });
+      if (pending_order) {
+        const allTransection = await transection.find({ order_Id: pending_order.order_Id, status: 0 });
+        for (let index = 0; index < allTransection.length; index++) {
+          const {source,amount,user_Id,tx_Id} = allTransection[index];
+          const wallet = await userWallet.findOne({ user_Id: allTransection[index].user_Id })
+          let sourceWallet = wallet[source];
+          sourceWallet.value+=amount
+           const updateWallet = await userWallet.findOneAndUpdate({ user_Id }, { [source]: sourceWallet})
+           const updateTransection = await transection.findOneAndUpdate({tx_Id},{status:1})
+        }
+      const update_pending_order = await order.findOneAndUpdate({ user_Id: userSession, order_Id, status: 0 }, { status: 1, tx_hash });
+        return { status: true, pending_order }
+      } else {
+        return { status: false, pending_order }
+      }
+    } catch (error) {
+      return error
     }
+
 
 
   }

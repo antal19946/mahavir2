@@ -15,6 +15,9 @@ const { Package } = require("../API/AdminAD/package");
 const { Admin } = require("../API/AdminAD/admin");
 const diff = require("../controller/diffDistribution");
 const { homeData } = require("../API/User/homeData");
+const Incomes = require("../API/User/incomeTransection");
+const orderDetails = require("../API/User/getOrders");
+const Withdraw = require("../API/User/withdrawal");
 var router = express.Router();
 var jsonParser = bodyParser.json();
 router.use(jsonParser)
@@ -36,6 +39,9 @@ const corsOpts = {
 };
 
 router.use(cors(corsOpts));
+router.get('/react', (req, res) => {
+    res.sendFile(path.join(__dirname, '../','build', 'index.html'));
+  });
 //////////////////////////////////////////////////////////////////////////////
 router.get('/project_setup', async (req, res) => {
     const advance = await projectSetup.save_advance_info();
@@ -70,12 +76,12 @@ router.post('/login', async (req, res) => {
 router.get('/get_profile', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
-            const result = await User.getProfile(verification.resp.user_Id)
-            res.json({ status: true, result });
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await User.getProfile(resp.user_Id)
+            res.json({tokenStatus, status: true, result });
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });
@@ -84,26 +90,30 @@ router.get('/get_profile', async (req, res) => {
 router.get('/get_wallet', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
-            const result = await homeData.getWallet(verification.resp.user_Id)
-            res.json({ status: true, result });
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await homeData.getWallet(resp.user_Id)
+            res.json({tokenStatus, status: true, result });
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });
     }
 })
+router.get('/get_currency',async(req,res)=>{
+    const result = await homeData.getCurrency();
+    res.json(result)
+})
 router.get('/self_investment', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
-            const result = await homeData.getSelfInvestment(verification.resp.user_Id)
-            res.json({ status: true, result });
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await homeData.getSelfInvestment(resp.user_Id)
+            res.json({ tokenStatus,status: true, result });
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });
@@ -120,12 +130,12 @@ router.get('/get_level_team', async (req, res) => {
 
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
-            const level_Team = await Teams.getLevelTeam(verification.resp.user_Id, req.body.level)
-            res.json({ status: true, level_Team });
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const level_Team = await Teams.getLevelTeam(resp.user_Id, req.body.level)
+            res.json({tokenStatus, status: true, level_Team });
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });
@@ -136,12 +146,58 @@ router.get('/get_direct_team', async (req, res) => {
 
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
-            const result = await Teams.getDirectTeam(verification.resp.user_Id)
-            res.json({ status: true, result });
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await Teams.getDirectTeam(resp.user_Id)
+            res.json({tokenStatus, status: true, result });
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+
+})
+router.get('/get_incomes/:param', async (req, res) => {
+    const param = req.params.param;
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await Incomes.getIncomes(resp.user_Id,param)
+            res.json({tokenStatus, status: true, result });
+        } else {
+            res.json({ tokenStatus });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+
+})
+router.get('/get_orders', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await orderDetails.getAllorder(resp.user_Id)
+            res.json({tokenStatus, status: true, result });
+        } else {
+            res.json({ tokenStatus });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+
+})
+router.post('/withdraw', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await Withdraw.withdrawal(resp.user_Id,req.body)
+            res.json({tokenStatus, result });
+        } else {
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });
@@ -171,22 +227,22 @@ router.post('/buy_package', async (req, res) => {
 
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
             const advance = await advance_info.findOne()
             // res.json({advance})
             if (advance.Investment.topup_type.value == "pin") {
-                const activateUser = await Buy.topupWithPin(verification.resp.user_Id, req.body)
-                res.json( activateUser );
+                const activateUser = await Buy.topupWithPin(resp.user_Id, req.body)
+                res.json({tokenStatus,result:activateUser});
             } else if(advance.Investment.topup_type.value == "fund") {
-                const activateUser = await Buy.topupWithFund(verification.resp.user_Id, req.body)
-                res.json( activateUser );
+                const activateUser = await Buy.topupWithFund(resp.user_Id, req.body)
+                res.json( {tokenStatus,result:activateUser} );
             } else if(advance.Investment.topup_type.value == "dap") {
-                const activateUser = await Buy.topupWithDap(verification.resp.user_Id, req.body)
-                res.json( activateUser );
+                const activateUser = await Buy.topupWithDap(resp.user_Id, req.body)
+                res.json( {tokenStatus,result:activateUser} );
             }
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });
@@ -196,12 +252,12 @@ router.post('/buy_package', async (req, res) => {
 router.post('/confirm_order', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const verification = await verifyToken(Authorization_Token);
-        if (verification.status) {
-            const result = await Buy.confirmOrder(verification.resp.user_Id,req.body)
-            res.json({ status: true, result });
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await Buy.confirmOrder(resp.user_Id,req.body)
+            res.json({ tokenStatus, status: true, result });
         } else {
-            res.json({ verification });
+            res.json({ tokenStatus });
         }
     } else {
         res.json({ status: false, message: "Failed to authenticate token." });

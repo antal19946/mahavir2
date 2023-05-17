@@ -13,7 +13,8 @@ const orderSchema = new mongoose.Schema({
         type:String
     },
     tx_hash:{
-        type:String
+        type:String,
+        default:null
     },
     package_name:{
         type:String

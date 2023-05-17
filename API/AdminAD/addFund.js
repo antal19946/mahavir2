@@ -1,5 +1,5 @@
 const userWallet = require("../../Modals/userWallet");
-const { Transection } = require("../../controller/commans/saveTransections");
+const { saveTransection } = require("../../controller/commans/saveTransections");
 
 class Funds{
     async addFund(body){
@@ -14,7 +14,18 @@ class Funds{
         
                       }
                 )
-                Transection({user_Id,to_from:'admin',tx_type:"admin credit",debit_credit:"credit",source:null,wallet_type:'fund_wallet',amount,status:1,remark:`Recieved ${amount} fund from admin`})
+                const tx_body = {
+                    user_Id,
+                    to_from:"admin",
+                    tx_type: "admin_credit",
+                    debit_credit: "credit",
+                    source: null,
+                    wallet_type: 'fund_wallet',
+                    amount,
+                     status: 1,
+                    remark: `Recieved ${amount} fund from admin`,
+                  }
+                  const tarnsection = await saveTransection(tx_body);
                 return {status:true,message:'Fund added successfully'};
             } else {
                 return {status:false,message:'Invalid username'}

@@ -1,3 +1,4 @@
+const company_info = require("../../Modals/companyInfo");
 const order = require("../../Modals/orders");
 const userWallet = require("../../Modals/userWallet");
 
@@ -14,6 +15,10 @@ class home{
           });
           const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
           return total_order_amount;
+    }
+    async getCurrency(){
+        const {currency,currency_sign} = await company_info.findOne();
+        return {status:true,currency,currency_sign}
     }
 }
 const homeData =new home();

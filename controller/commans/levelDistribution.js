@@ -3,10 +3,10 @@ const UserData = require("../../Modals/Users");
 const plan = require("../../Modals/plan");
 const userWallet = require("../../Modals/userWallet");
 const newLocal = './saveTransections';
-const { Transection } = require('./saveTransections');
+const { saveTransection } = require('./saveTransections');
 class Distribution {
   constructor() { }
-  async levelIncome(user_Id, level, packageAmount,packageDetails,order_Id) {
+  async levelIncome(user_Id, level, packageAmount, packageDetails, order_Id) {
     const user = await User.getProfile(user_Id);
     var sponsor = user.sponsor_Id;
     const Plans = await packageDetails;
@@ -36,7 +36,19 @@ class Distribution {
 
               }
             );
-           const tarnsection = await Transection({user_Id:wallet.user_Id,to_from:user_Id,order_Id,tx_type:"Derect Income",debit_credit:"credit",source:`level_income`,wallet_type:'main_income',amount:inc,status:1,remark:`Recieved direct income from ${user_Id}`});
+            const tx_body = {
+              user_Id: wallet.user_Id,
+              to_from: user_Id,
+              order_Id,
+              tx_type: "Derect Income",
+              debit_credit: "credit",
+              source: `level_income`,
+              wallet_type: 'main_wallet',
+              amount: inc, status: 1,
+              remark: `Recieved direct income from ${user_Id}`,
+              level:index+1
+            }
+            const tarnsection = await saveTransection(tx_body);
             // console.log(index, "", inc);
           } else {
             const update = await userWallet.findOneAndUpdate(
@@ -46,7 +58,19 @@ class Distribution {
                 "direct_income.updated_on": new Date()
               }
             );
-            const tarnsection = await Transection({user_Id:wallet.user_Id,to_from:user_Id,order_Id,tx_type:"Derect Income",debit_credit:"credit",source:`level ${index}`,wallet_type:'direct_income',amount:inc,status:1,remark:`Recieved direct income from ${user_Id}`});
+            const tx_body = {
+              user_Id: wallet.user_Id,
+              to_from: user_Id,
+              order_Id,
+              tx_type: "Derect Income",
+              debit_credit: "credit",
+              source: `level_income`,
+              wallet_type: 'main_wallet',
+              amount: inc, status: 1,
+              remark: `Recieved direct income from ${user_Id}`,
+              level:index+1
+            }
+            const tarnsection = await saveTransection(tx_body);
             // console.log("test");
           }
           sponsor = spo.sponsor_Id;
@@ -69,7 +93,20 @@ class Distribution {
 
               }
             );
-            const tarnsection = await Transection({user_Id:wallet.user_Id,to_from:user_Id,order_Id,tx_type:"Level Income",debit_credit:"credit",source:`level ${index}`,wallet_type:'level_income',amount:inc,status:1,remark:`Recieved level income from level ${index}(${user_Id})`});
+            const tx_body = {
+              user_Id: wallet.user_Id,
+              to_from: user_Id,
+              order_Id,
+              tx_type: "Level Income",
+              debit_credit: "credit",
+              source: `level_income`,
+              wallet_type: 'main_wallet',
+              amount: inc, 
+              status: 1,
+              remark: `Recieved direct income from ${user_Id}`,
+              level:index+1
+            }
+            const tarnsection = await saveTransection(tx_body);
 
             // console.log(index, "", inc);
           } else {
@@ -80,7 +117,20 @@ class Distribution {
                 "level_income.updated_on": new Date()
               }
             );
-            const tarnsection = await Transection({user_Id:wallet.user_Id,to_from:user_Id,order_Id,tx_type:"Level Income",debit_credit:"credit",source:`level ${index}`,wallet_type:'level_income',amount:inc,status:1,remark:`Recieved level income from level ${index}(${user_Id})`});
+            const tx_body = {
+              user_Id: wallet.user_Id,
+              to_from: user_Id,
+              order_Id,
+              tx_type: "Derect Income",
+              debit_credit: "credit",
+              source: `level_income`,
+              wallet_type: 'main_wallet',
+              amount: inc,
+              status: 1,
+              remark: `Recieved direct income from ${user_Id}`,
+              level:index+1
+            }
+            const tarnsection = await saveTransection(tx_body);
             // console.log("test");
           }
           sponsor = spo.sponsor_Id;

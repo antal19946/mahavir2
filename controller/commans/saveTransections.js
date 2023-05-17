@@ -1,10 +1,8 @@
 const transection = require("../../Modals/transction")
 
-const Transection = async(user_Id,to_from,order_Id,tx_type,debit_credit,source,wallet_type,amount,status,remark)=>{
+const saveTransection = async(body)=>{
     const tx_id = await transection.find().count()
-    // console.log({
-    //     user_Id,to_from,tx_type,debit_credit,source,wallet_type,amount,status,remark
-    // })
+   const {user_Id,to_from,order_Id,tx_type,debit_credit,source,wallet_type,amount,status,remark,ben_per,level}=body;
     try {
         const trx = await new transection({
             user_Id,
@@ -29,4 +27,4 @@ const Transection = async(user_Id,to_from,order_Id,tx_type,debit_credit,source,w
     }
    
 }
-module.exports={Transection}
+module.exports={saveTransection}

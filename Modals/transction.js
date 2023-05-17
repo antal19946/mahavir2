@@ -27,8 +27,16 @@ const transectionSchema = new mongoose.Schema({
     wallet_type:{
         type:String
     },
+    level:{
+        type:String,
+        default:null
+    },
     amount:{
         type:Number
+    },
+    ben_per:{
+        type:Number,
+        default:null
     },
     time:{
         type:String
