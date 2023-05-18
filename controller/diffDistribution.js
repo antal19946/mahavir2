@@ -3,22 +3,25 @@ const UserData = require("../Modals/Users");
 const order = require("../Modals/orders");
 const transection = require("../Modals/transction");
 const { saveTransection } = require("./commans/saveTransections");
+const { isSameDay } = require('date-fns');
 
 class Difference {
-  constructor() {
-    this.fun();
-  }
-  async fun() {
-    const orders = await order.find({
-      user_Id: 2
-    });
+//   constructor() {
+//     this.fun();
+//   }
+//   async fun() {
+//     const currentDate = new Date();
+//     const startOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+//     const endOfDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + 1);
+//     const user = await UserData.find({
+//       joining_date: {
+//         $gte: startOfDay,
+//         $lt: endOfDay,
+//       }
+//     });
+// console.log(user)
 
-    // calculate the sum of the order_amount property using reduce()
-    const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
-
-    console.log('Total order amount:', orders);
-
-  }
+//   }
   async level_distribution(u_Id, level, amount, packageDetail, order_Id) {
     const user = await User.getProfile(u_Id);
     var sponsor = user.sponsor_Id;

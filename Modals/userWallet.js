@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const user_wallet = new mongoose.Schema({
     user_Id:{
-        type: String,
+        type: Number,
         required:true
     },
     main_wallet:{
@@ -25,7 +25,7 @@ const user_wallet = new mongoose.Schema({
         default:0
        },
        updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
     },
@@ -47,7 +47,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -69,7 +69,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -91,7 +91,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -113,7 +113,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -161,7 +161,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -187,7 +187,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -213,7 +213,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -239,7 +239,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -265,7 +265,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -291,7 +291,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -317,7 +317,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      },
@@ -339,7 +339,7 @@ const user_wallet = new mongoose.Schema({
          default:0
         },
         updated_on:{
-         type:String,
+         type:Date,
          default:null
        }
      }

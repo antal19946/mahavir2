@@ -12,7 +12,7 @@ const E_pinSchema = new mongoose.Schema({
         required:true
     },
     user_Id:{
-        type: String,
+        type: Number,
         required:true
     },
     use_for_user_Id:{
@@ -47,10 +47,10 @@ const E_pinSchema = new mongoose.Schema({
         default:0
     },
     created_on:{
-        type: String,
+        type: Date,
     },
     updated_on:{
-        type: String,
+        type: Date,
         default:null
     }
     

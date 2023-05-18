@@ -174,6 +174,22 @@ router.get('/get_incomes/:param', async (req, res) => {
     }
 
 })
+router.get('/get_today_incomes/:param', async (req, res) => {
+    const param = req.params.param;
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        if (tokenStatus) {
+            const result = await Incomes.getTodayIncome(resp.user_Id,param)
+            res.json({tokenStatus, status: true, result });
+        } else {
+            res.json({ tokenStatus });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+
+})
 router.get('/get_orders', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {

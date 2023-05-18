@@ -255,88 +255,80 @@ const planSchema = new mongoose.Schema({
             type: Number,
             default: 0
         },
-        level_1: {
-            type: Number,
-            default: 0
+        income_type: {
+            options: {
+                type: String,
+                default: "percentage,fix"
+            },
+            value: {
+                type: String,
+                default: "percentage"
+            }
         },
-        level_2: {
-            type: Number,
-            default: 0
-        },
-        level_3: {
-            type: Number,
-            default: 0
-        },
-        level_4: {
-            type: Number,
-            default: 0
-        },
-        level_5: {
-            type: Number,
-            default: 0
-        },
-        level_6: {
-            type: Number,
-            default: 0
-        },
-        level_7: {
-            type: Number,
-            default: 0
-        },
-        level_8: {
-            type: Number,
-            default: 0
-        },
-        level_9: {
-            type: Number,
-            default: 0
-        },
-        level_10: {
-            type: Number,
-            default: 0
-        },
-        level_11: {
-            type: Number,
-            default: 0
-        },
-        level_12: {
-            type: Number,
-            default: 0
-        },
-        level_13: {
-            type: Number,
-            default: 0
-        },
-        level_14: {
-            type: Number,
-            default: 0
-        },
-        level_15: {
-            type: Number,
-            default: 0
-        },
-        level_16: {
-            type: Number,
-            default: 0
-        },
-        level_17: {
-            type: Number,
-            default: 0
-        },
-        level_18: {
-            type: Number,
-            default: 0
-        },
-        level_19: {
-            type: Number,
-            default: 0
-        },
-        level_20: {
-            type: Number,
-            default: 0
-        },
+        level:
+        {
+            type: Array,
+            default: [
+                {
+                    "level": 1,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 2,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 3,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 4,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 5,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 6,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 7,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 8,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 9,
+                    "value":10,
+                    "direct_required": 1
+                },
+                {
+                    "level": 10,
+                    "value":10,
+                    "direct_required": 1
+                }
+            ]
+        }
+
+        
     },
     roi_income: {
+        status:{
+            type:Number,
+            default:1
+        },
         income_type: {
             options: {
                 type: String,
@@ -349,7 +341,7 @@ const planSchema = new mongoose.Schema({
         },
         value: {
             type: Number,
-            default: 0
+            default: 2
         },
         status: {
             type: Number,

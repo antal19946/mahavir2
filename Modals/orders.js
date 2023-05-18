@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema({
     user_Id:{
-        type:String
+        type:Number
     },
     order_Id:{
         type:String
@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema({
         type:Number
     },
     time:{
-        type:String
+        type:Date
     },
     status:{
         type:String

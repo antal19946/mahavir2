@@ -11,3 +11,4 @@ mongoose.connect(uri,{
 }).catch((e)=>{
     console.log(e)
 })
+// mongodb+srv://eracom:eracom12345@cluster0.a5mjvlj.mongodb.net

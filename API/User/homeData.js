@@ -1,25 +1,38 @@
 const company_info = require("../../Modals/companyInfo");
 const order = require("../../Modals/orders");
 const userWallet = require("../../Modals/userWallet");
+const Incomes = require("./incomeTransection");
 
-class home{
-    async getWallet(user_Id){
-        const wallet = await userWallet.findOne({user_Id});
-
-        return wallet;
+class home {
+    constructor() {
+        // this.getWallet(1)
     }
-    async getSelfInvestment(user_Id){
+    async getWallet(user_Id) {
+        const wallet = await userWallet.findOne({ user_Id });
+        const keys = Object.keys(wallet._doc);
+        const newWallet=[]
+        // console.log(keys);
+        for (let index = 0; index < keys.length-3; index++) {
+            const today_income = await Incomes.getTodayIncome(user_Id,keys[index]);
+            const {name,wallet_type,wallet_status,value} = wallet[keys[index]]
+            newWallet.push({name,wallet_type,wallet_status,value,today_income})
+
+        }
+// console.log(newWallet,"errrrrrrrrrrrrrrrrrrr")
+        return newWallet;
+    }
+    async getSelfInvestment(user_Id) {
         const orders = await order.find({
             user_Id,
             status: 1,
-          });
-          const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
-          return total_order_amount;
+        });
+        const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);
+        return total_order_amount;
     }
-    async getCurrency(){
-        const {currency,currency_sign} = await company_info.findOne();
-        return {status:true,currency,currency_sign}
+    async getCurrency() {
+        const { currency, currency_sign } = await company_info.findOne();
+        return { status: true, currency, currency_sign }
     }
 }
-const homeData =new home();
-module.exports={homeData};
+const homeData = new home();
+module.exports = { homeData };

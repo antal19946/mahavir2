@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const transectionSchema = new mongoose.Schema({
     user_Id:{
-        type:String
+        type:Number
     },
     to_from:{
         type:String
@@ -39,7 +39,7 @@ const transectionSchema = new mongoose.Schema({
         default:null
     },
     time:{
-        type:String
+        type:Date
     },
     status:{
         type:String

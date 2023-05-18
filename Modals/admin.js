@@ -55,7 +55,7 @@ const adminSchema = new mongoose.Schema({
     },
   },
   created_on:{
-    type:String,
+    type:Date,
   }
 });
 const adminData = new mongoose.model("adminData", adminSchema);
