@@ -1,9 +1,8 @@
-const { User } = require("../API/User/user");
+const  User  = require("../API/User/user");
 const UserData = require("../Modals/Users");
 const order = require("../Modals/orders");
 const transection = require("../Modals/transction");
-const { saveTransection } = require("./commans/saveTransections");
-const { isSameDay } = require('date-fns');
+const  saveTransection  = require("./commans/SaveTransections");
 
 class Difference {
 //   constructor() {
@@ -34,7 +33,7 @@ class Difference {
       if (spo) {
         console.log("user_id",spo.user_Id)
         const orders = await order.find({
-          user_Id: 1,
+          user_Id: spo.user_Id,
           status: 1,
         });
         const total_order_amount = orders.reduce((acc, obj) => acc + obj.order_amount, 0);

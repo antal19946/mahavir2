@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 const secrateKey = "secretkeyappearsheregdsahgdahdcasdfdcasgdfdafsadf\dsasdajsdghf\dhashdga\sdfhfdj"
 
-class Auth{
+class Authtoken{
     constructor(auth) {
       this.user_Id = auth
       }
@@ -24,5 +24,5 @@ class Auth{
         )
     }
 }
-const {generateToken,verifyToken} = new Auth()
-module.exports = {generateToken,verifyToken}
+const Auth = new Authtoken()
+module.exports = Auth;

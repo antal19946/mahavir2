@@ -1,9 +1,9 @@
-const { User } = require("../../API/User/user");
+const  User  = require("../../API/User/user");
 const UserData = require("../../Modals/Users");
 const plan = require("../../Modals/plan");
 const userWallet = require("../../Modals/userWallet");
 const newLocal = './saveTransections';
-const { saveTransection } = require('./saveTransections');
+const  saveTransection  = require('./SaveTransections');
 class Distribution {
   constructor() { }
   async levelIncome(user_Id, level, packageAmount, packageDetails, order_Id) {
@@ -278,4 +278,4 @@ class Distribution {
   }
 }
 const levelDistribution = new Distribution();
-module.exports = { levelDistribution };
+module.exports =  levelDistribution ;

@@ -1,7 +1,7 @@
-const { saveTransection } = require("../../Controller/commans/saveTransections");
 const advance_info = require("../../Modals/advanceInfo");
 const company_info = require("../../Modals/companyInfo");
 const userWallet = require("../../Modals/userWallet");
+const saveTransection = require("../../controller/commans/SaveTransections");
 
 class withdraw {
     async withdrawal(user_Id, body) {

@@ -1,12 +1,11 @@
 const Incomes = require("../API/User/incomeTransection");
-const { User } = require("../API/User/user");
+const  User  = require("../API/User/user");
 const UserData = require("../Modals/Users");
 const order = require("../Modals/orders");
 const plan = require("../Modals/plan");
 const transection = require("../Modals/transction");
 const userWallet = require("../Modals/userWallet");
-const { saveTransection } = require("./commans/saveTransections");
-const { isSameDay } = require('date-fns');
+const  saveTransection  = require("./commans/SaveTransections");
 class cron {
   // constructor() {
   //   this.fun()
@@ -62,5 +61,5 @@ class cron {
     }
   }
 }
-const Crons = new cron();
-module.exports = { Crons };
+const crons = new cron();
+module.exports =  crons;

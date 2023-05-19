@@ -12,4 +12,4 @@ class admin{
    }
 }
 const Admin = new admin();
-module.exports = {Admin};
+module.exports = Admin;

@@ -1,4 +1,4 @@
-const { generateToken, verifyToken } = require("../../controller/commans/Auth");
+const Auth = require("../../controller/commans/Auth");
 const UserData = require("../../Modals/Users");
 const advance_info = require("../../Modals/advanceInfo");
 const validator = require("email-validator");
@@ -180,7 +180,7 @@ class user {
           user_Id: result.user_Id
         })
         const savewallet = await wallet.save()
-        const accessToken = await generateToken(result.user_Id);
+        const accessToken = await Auth.generateToken(result.user_Id);
         return { status: Error.status, message: Error.message, accessToken, result }
       } else {
         return Error
@@ -202,7 +202,7 @@ class user {
 
     const profile_pic = "http://" + hostName + "/" + fileName;
     if (Authorization_Token) {
-      const verification = await verifyToken(Authorization_Token)
+      const verification = await Auth.verifyToken(Authorization_Token)
       if (verification.status) {
         const update = await UserData.findOneAndUpdate(
           { user_Id: verification.resp.user_Id },
@@ -224,7 +224,7 @@ class user {
       if (UserDetail) {
         const comparePassword = is_password_required.value=="yes"? await bcrypt.compare(password, UserDetail.password):true;
         if (UserDetail && comparePassword) {
-          const accessToken = await generateToken(UserDetail.user_Id)
+          const accessToken = await Auth.generateToken(UserDetail.user_Id)
           return ({
             accessToken,
             status: true,
@@ -266,5 +266,5 @@ function generateString(length) {
 }
 
 const User = new user();
-module.exports = { User };
+module.exports =  User ;
 

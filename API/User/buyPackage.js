@@ -1,8 +1,6 @@
-const {
-  levelDistribution,
-} = require("../../Controller/commans/levelDistribution");
-const { saveOrder } = require("../../Controller/commans/order");
-const { saveTransection } = require("../../controller/commans/saveTransections");
+const levelDistribution = require("../../controller/commans/LevelDistribution");
+const  saveOrder  = require("../../controller/commans/Order");
+const  saveTransection  = require("../../controller/commans/SaveTransections");
 const EpinData = require("../../Modals/Pin");
 const UserData = require("../../Modals/Users");
 const advance_info = require("../../Modals/advanceInfo");
@@ -290,4 +288,4 @@ class buy {
   }
 }
 const Buy = new buy();
-module.exports = { Buy };
+module.exports =  Buy;

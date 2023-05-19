@@ -1,5 +1,5 @@
 const userWallet = require("../../Modals/userWallet");
-const { saveTransection } = require("../../controller/commans/saveTransections");
+const  saveTransection  = require("../../controller/commans/SaveTransections");
 
 class Funds{
     async addFund(body){
@@ -38,4 +38,4 @@ class Funds{
     }
 }
 const Fund = new Funds();
-module.exports ={Fund}
+module.exports =Fund

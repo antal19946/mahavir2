@@ -19,4 +19,4 @@ const saveOrder = async({user_Id,source,tx_type,package_name,order_amount,status
     const result = await odr.save()
     return result;
 }
-module.exports={saveOrder}
+module.exports = saveOrder;

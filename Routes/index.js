@@ -2,19 +2,18 @@ const express = require("express");
 var bodyParser = require('body-parser');
 const cors = require('cors')
 const path = require('path');
-const { User } = require("../API/User/user");
-const { upload } = require("../controller/commans/UploadFile");
-const { Teams } = require("../API/User/getLevelTeam");
-const { verifyToken } = require("../controller/commans/Auth");
-const { Buy } = require("../API/User/buyPackage");
-const projectSetup = require("../Controller/projectSetup");
-const { Fund } = require("../API/AdminAD/addFund");
+const  User  = require("../API/User/user");
+const  upload  = require("../controller/commans/UploadFile");
+const  Teams  = require("../API/User/getLevelTeam");
+const  Auth  = require("../controller/commans/Auth");
+const  Buy  = require("../API/User/buyPackage");
+const projectSetup = require("../controller/ProjectSetup");
+const  Fund  = require("../API/AdminAD/addFund");
 const advance_info = require("../Modals/advanceInfo");
-const { Crons } = require("../Controller/crons");
-const { Package } = require("../API/AdminAD/package");
-const { Admin } = require("../API/AdminAD/admin");
-const diff = require("../controller/diffDistribution");
-const { homeData } = require("../API/User/homeData");
+const  crons  = require("../controller/Crons");
+const  Package  = require("../API/AdminAD/package");
+const  Admin  = require("../API/AdminAD/admin");
+const  homeData  = require("../API/User/homeData");
 const Incomes = require("../API/User/incomeTransection");
 const orderDetails = require("../API/User/getOrders");
 const Withdraw = require("../API/User/withdrawal");
@@ -76,7 +75,7 @@ router.post('/login', async (req, res) => {
 router.get('/get_profile', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await User.getProfile(resp.user_Id)
             res.json({tokenStatus, status: true, result });
@@ -90,7 +89,7 @@ router.get('/get_profile', async (req, res) => {
 router.get('/get_wallet', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await homeData.getWallet(resp.user_Id)
             res.json({tokenStatus, status: true, result });
@@ -108,7 +107,7 @@ router.get('/get_currency',async(req,res)=>{
 router.get('/self_investment', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await homeData.getSelfInvestment(resp.user_Id)
             res.json({ tokenStatus,status: true, result });
@@ -130,7 +129,7 @@ router.get('/get_level_team', async (req, res) => {
 
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const level_Team = await Teams.getLevelTeam(resp.user_Id, req.body.level)
             res.json({tokenStatus, status: true, level_Team });
@@ -146,7 +145,7 @@ router.get('/get_direct_team', async (req, res) => {
 
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await Teams.getDirectTeam(resp.user_Id)
             res.json({tokenStatus, status: true, result });
@@ -162,7 +161,7 @@ router.get('/get_incomes/:param', async (req, res) => {
     const param = req.params.param;
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await Incomes.getIncomes(resp.user_Id,param)
             res.json({tokenStatus, status: true, result });
@@ -178,7 +177,7 @@ router.get('/get_today_incomes/:param', async (req, res) => {
     const param = req.params.param;
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await Incomes.getTodayIncome(resp.user_Id,param)
             res.json({tokenStatus, status: true, result });
@@ -193,7 +192,7 @@ router.get('/get_today_incomes/:param', async (req, res) => {
 router.get('/get_orders', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await orderDetails.getAllorder(resp.user_Id)
             res.json({tokenStatus, status: true, result });
@@ -208,7 +207,7 @@ router.get('/get_orders', async (req, res) => {
 router.post('/withdraw', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await Withdraw.withdrawal(resp.user_Id,req.body)
             res.json({tokenStatus, result });
@@ -243,7 +242,7 @@ router.post('/buy_package', async (req, res) => {
 
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const advance = await advance_info.findOne()
             // res.json({advance})
@@ -268,7 +267,7 @@ router.post('/buy_package', async (req, res) => {
 router.post('/confirm_order', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
-        const {tokenStatus,resp} = await verifyToken(Authorization_Token);
+        const {tokenStatus,resp} = await Auth.verifyToken(Authorization_Token);
         if (tokenStatus) {
             const result = await Buy.confirmOrder(resp.user_Id,req.body)
             res.json({ tokenStatus, status: true, result });
@@ -280,7 +279,7 @@ router.post('/confirm_order', async (req, res) => {
     }
 })
 router.post('/roi_closing', async (req, res) => {
-    const advance = await Crons.roi_closing()
+    const advance = await crons.roi_closing()
     res.json({ advance })
 })
 

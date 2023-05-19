@@ -137,4 +137,4 @@ class Pack{
     }
 }
 const Package =new Pack();
-module.exports ={Package}
+module.exports =Package

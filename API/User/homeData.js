@@ -35,4 +35,4 @@ class home {
     }
 }
 const homeData = new home();
-module.exports = { homeData };
+module.exports =  homeData ;

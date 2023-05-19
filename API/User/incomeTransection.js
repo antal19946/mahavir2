@@ -1,5 +1,5 @@
 const transection = require("../../Modals/transction");
-const { User } = require("./user");
+const  User  = require("./user");
 
 class income{
     async getIncomes(user_Id,param){

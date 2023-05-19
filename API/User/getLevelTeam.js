@@ -1,6 +1,6 @@
 const UserData = require("../../Modals/Users");
-const { homeData } = require("./homeData");
-const { User } = require("./user");
+const  homeData  = require("./homeData");
+const  User  = require("./user");
 
 class Team{
     constructor(){
@@ -41,4 +41,4 @@ class Team{
     }
 }
 const Teams = new Team();
-module.exports = {Teams}
+module.exports = Teams

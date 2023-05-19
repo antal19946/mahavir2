@@ -1,7 +1,7 @@
 const UserData = require("../Modals/Users");
 const advance_info = require("../Modals/advanceInfo");
 const userWallet = require("../Modals/userWallet");
-const { Package } = require("../API/AdminAD/package");
+const  Package  = require("../API/AdminAD/package");
 const bcrypt = require("bcrypt");
 const adminData = require("../Modals/admin");
 const company_info = require("../Modals/companyInfo");

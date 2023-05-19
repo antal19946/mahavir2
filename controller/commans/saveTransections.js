@@ -27,4 +27,4 @@ const saveTransection = async(body)=>{
     }
    
 }
-module.exports={saveTransection}
+module.exports=saveTransection;
