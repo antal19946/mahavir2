@@ -1,4 +1,4 @@
-const  User  = require("../API/User/user");
+const user_data = require("../API/User/user");
 const UserData = require("../Modals/Users");
 const order = require("../Modals/orders");
 const transection = require("../Modals/transction");
@@ -22,7 +22,7 @@ class Difference {
 
 //   }
   async level_distribution(u_Id, level, amount, packageDetail, order_Id) {
-    const user = await User.getProfile(u_Id);
+    const user = await user_data.getProfile(u_Id);
     var sponsor = user.sponsor_Id;
     var last_rank = 0;
     const walletAddress = [];
@@ -66,7 +66,7 @@ class Difference {
                 ben_per:rank.value
               }
               const tarns =await saveTransection(tx_body);;
-              const profile = await User.getProfile(tarns.user_Id)
+              const profile = await user_data.getProfile(tarns.user_Id)
               transctionAmt.push(
                 tarns.amount
               );

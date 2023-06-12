@@ -5,6 +5,8 @@ const  Package  = require("../API/AdminAD/package");
 const bcrypt = require("bcrypt");
 const adminData = require("../Modals/admin");
 const company_info = require("../Modals/companyInfo");
+const Ranks = require("../Modals/ranks");
+const plan = require("../Modals/plan");
 
 class setup {
     constructor() {
@@ -23,6 +25,7 @@ class setup {
         return result;
     }
     async addFirstUser() {
+      const {single_leg_plan,royalty_plan} = await plan.findOne({'single_leg_plan.status':1});
         const user = new UserData({
             name: "demo",
             email: "demo@gmail.com",
@@ -34,6 +37,28 @@ class setup {
             sponsor_Id: "",
             joining_date: new Date()
         });
+        const single_leg_rank = [];
+        const royalty_rank = [];
+        single_leg_plan.ranks.map((rank)=>{
+          let rrr = {
+            rank_name:rank.rank_name,
+            status:0
+          }
+          single_leg_rank.push(rrr)
+        })
+        royalty_plan.ranks.map((rank)=>{
+          let rrr = {
+            rank_name:rank.rank_name,
+            status:0
+          }
+          royalty_rank.push(rrr)
+        })
+        const rank = new Ranks({
+          user_Id: 1,
+          single_leg_rank,
+          royalty_rank
+        });
+        const saveRank = await rank.save();
         const result = await user.save();
         const wallet = new userWallet({
             user_Id: result.user_Id

@@ -4,11 +4,38 @@ const advance_info = require("../../Modals/advanceInfo");
 const validator = require("email-validator");
 const bcrypt = require("bcrypt");
 const userWallet = require("../../Modals/userWallet");
+const Ranks = require("../../Modals/ranks");
+const plan = require("../../Modals/plan");
 
 class user {
   constructor() {
     this.advance = null;
-    this.getAdvance();
+    // this.getAdvance();
+    // this.test()
+  }
+  // async test(){
+  //   const {single_leg_plan} = await plan.findOne({'single_leg_plan.status':1});
+  //   const rank_name = [];
+  //   single_leg_plan.ranks.map((rank)=>{
+  //     let rrr = {
+  //       rank_name:rank.rank_name,
+  //       status:0
+  //     }
+  //     rank_name.push(rrr)
+  //   })
+  //   console.log(rank_name)
+  // }
+  async isActive(user_Id){
+    try {
+      const user = await UserData.findOne({user_Id,status:1})
+      if (user) {
+        return {status:true}
+      } else {
+        return {status:false}
+      }
+    } catch (error) {
+      return {status:false}
+    }
   }
   async getAdvance() {
     const advanceInfo = await advance_info.findOne()
@@ -26,7 +53,7 @@ class user {
         return ({ status: true, userName: userNmae });
       } else if (user_gen_method.value === "manual") {
         var alfanum = /^[0-9a-zA-Z]+$/;
-        if (userName.match(alfanum)) {
+        if (userName) {
           return ({ status: true, userName });
         } else {
           return ({ status: false, message: "please enter valid username" });
@@ -139,10 +166,13 @@ class user {
         }
   }
   async register(body) {
+    console.log(body)
     try {
+      const {single_leg_plan,royalty_plan} = await plan.findOne();
       const { is_mobile_required,is_email_required,is_password_required } = this.advance.Registration;
       const { name, email, mobile, password, sponsor,user_name } = body;
       const velidUserName = await this.generateUserName(user_name);
+      console.log(velidUserName)
       const isEmail = await is_email_required.value=="yes"? this.isEmail(email):{status:true};
       const isMobile = await is_mobile_required.value=="yes"? this.isMobile(mobile):{status:true};
       const sponsor_Data = await this.sponsor(sponsor);
@@ -179,6 +209,28 @@ class user {
         const wallet = new userWallet({
           user_Id: result.user_Id
         })
+        const single_leg_rank = [];
+        const royalty_rank = [];
+        single_leg_plan.ranks.map((rank)=>{
+          let rrr = {
+            rank_name:rank.rank_name,
+            status:0
+          }
+          single_leg_rank.push(rrr)
+        })
+        royalty_plan.ranks.map((rank)=>{
+          let rrr = {
+            rank_name:rank.rank_name,
+            status:0
+          }
+          royalty_rank.push(rrr)
+        })
+        const rank = new Ranks({
+          user_Id: result.user_Id,
+          single_leg_rank,
+          royalty_rank
+        });
+        const saveRank = await rank.save();
         const savewallet = await wallet.save()
         const accessToken = await Auth.generateToken(result.user_Id);
         return { status: Error.status, message: Error.message, accessToken, result }
@@ -265,6 +317,6 @@ function generateString(length) {
   return result;
 }
 
-const User = new user();
-module.exports =  User ;
+const user_data = new user();
+module.exports =  user_data;
 

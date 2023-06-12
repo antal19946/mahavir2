@@ -1,10 +1,11 @@
+const UserData = require("../../Modals/Users");
 const userWallet = require("../../Modals/userWallet");
-const  saveTransection  = require("../../controller/commans/SaveTransections");
-
+const saveTransection = require("../../controller/commans/SaveTransections");
 class Funds{
     async addFund(body){
-        const {user_Id,amount}=body;
+        const {user_name,amount}=body;
         try {
+            const {user_Id}= await UserData.findOne({user_name})
             const wallet = await userWallet.findOne({user_Id})
             if (wallet) {
                 const update = await userWallet.findOneAndUpdate({user_Id},

@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   },
   user_name: {
     type: String,
-    unique: true,
+    unique: false,
   },
   sponsor_Id: {
     type: Number,

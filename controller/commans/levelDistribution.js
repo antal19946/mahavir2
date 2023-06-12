@@ -1,4 +1,4 @@
-const  User  = require("../../API/User/user");
+const user_data = require("../../API/User/user");
 const UserData = require("../../Modals/Users");
 const plan = require("../../Modals/plan");
 const userWallet = require("../../Modals/userWallet");
@@ -7,7 +7,7 @@ const  saveTransection  = require('./SaveTransections');
 class Distribution {
   constructor() { }
   async levelIncome(user_Id, level, packageAmount, packageDetails, order_Id) {
-    const user = await User.getProfile(user_Id);
+    const user = await user_data.getProfile(user_Id);
     var sponsor = user.sponsor_Id;
     const Plans = await packageDetails;
     for (let index = 1; index <= level; index++) {
@@ -142,7 +142,7 @@ class Distribution {
     }
   }
   async roiLevelIncome(user_Id, level, packageAmount, packageDetails, order_Id) {
-    const user = await User.getProfile(user_Id);
+    const user = await user_data.getProfile(user_Id);
     var sponsor = user.sponsor_Id;
     const Plans = await packageDetails;
     for (let index = 1; index <= level; index++) {
@@ -277,5 +277,5 @@ class Distribution {
     }
   }
 }
-const levelDistribution = new Distribution();
-module.exports =  levelDistribution ;
+const level_distribution = new Distribution();
+module.exports =  level_distribution

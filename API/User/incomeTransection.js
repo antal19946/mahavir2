@@ -1,5 +1,5 @@
 const transection = require("../../Modals/transction");
-const  User  = require("./user");
+const user_data = require("./user");
 
 class income{
     async getIncomes(user_Id,param){
@@ -7,7 +7,7 @@ class income{
         const newIncome = [];
         for (let index = 0; index < incomes.length; index++) {
                 const {to_from,amount,level,ben_per,time,remark}=incomes[index];
-                const profile = await User.getProfile(to_from);
+                const profile = await user_data.getProfile(to_from);
                 newIncome.push({
                     to_from:profile.user_name,
                     amount,
@@ -30,7 +30,6 @@ class income{
           },source:param,
           status:1
         });
-        console.log(todayIncome)
         const total_today_income = todayIncome.reduce((acc, obj) => acc + obj.amount, 0);
 
     return total_today_income;

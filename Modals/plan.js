@@ -37,7 +37,7 @@ const planSchema = new mongoose.Schema({
     level_income: {
         status: {
             type: Number,
-            default: 0
+            default: 1
         },
         income_type: {
             options: {
@@ -327,7 +327,7 @@ const planSchema = new mongoose.Schema({
     roi_income: {
         status:{
             type:Number,
-            default:1
+            default:0
         },
         income_type: {
             options: {
@@ -348,10 +348,59 @@ const planSchema = new mongoose.Schema({
             default: 0
         }
     },
+    staking_income: {
+        status:{
+            type:Number,
+            default:0
+        },
+        income_type: {
+            options: {
+                type: String,
+                default: "percentage,fix"
+            },
+            value: {
+                type: String,
+                default: "percentage"
+            }
+        },
+        stakes: {
+            type: Array,
+            default: [
+                {
+                    "days": 1,
+                    "value": 0.4
+                },
+                {
+                    "days": 7,
+                    "value": 0.8
+                },
+                {
+                    "days": 15,
+                    "value": 1
+                },
+                {
+                    "days": 30,
+                    "value": 1.2
+                },
+                {
+                    "days": 90,
+                    "value": 1.5
+                },
+                {
+                    "days": 180,
+                    "value": 1.8
+                },
+                {
+                    "days": 365,
+                    "value": 2
+                },
+            ]
+        }
+    },
     difference_income: {
         status: {
             type: Number,
-            default: 1
+            default: 0
         },
         ranks:
         {
@@ -410,6 +459,94 @@ const planSchema = new mongoose.Schema({
             ]
         }
 
+    },
+    single_leg_plan:{
+        status: {
+            type: Number,
+            default: 1
+        },
+        fix_closing_amount:{
+            type:Number,
+            default:1000
+        },
+        ranks:
+        {
+            type: Array,
+            default: [
+                {
+                    "min_team": 1,
+                    "max_team": 10000,
+                    "direct_required":1,
+                    "rank_name":"star1",
+                    "value": 25
+                },
+                {
+                    "min_team": 2,
+                    "max_team": 10000,
+                    "direct_required":1,
+                    "rank_name":"star2",
+                    "value": 25
+                },
+                {
+                    "min_team": 3,
+                    "max_team": 10000,
+                    "direct_required":1,
+                    "rank_name":"star3",
+                    "value": 25
+                },
+                {
+                    "min_team": 4,
+                    "max_team": 10000,
+                    "direct_required":1,
+                    "rank_name":"star4",
+                    "value": 25
+                }
+            ]
+        }
+    },
+    royalty_plan:{
+        status: {
+            type: Number,
+            default: 1
+        },
+        fix_closing_amount:{
+            type:Number,
+            default:1000
+        },
+        ranks:
+        {
+            type: Array,
+            default: [
+                {
+                    "min_team_required": 0,
+                    "max_days": 10,
+                    "direct_required":1,
+                    "rank_name":"star1",
+                    "value": 25
+                },
+                {
+                    "min_team_required": 0,
+                    "max_days": 10,
+                    "direct_required":2,
+                    "rank_name":"star2",
+                    "value": 25
+                },
+                {
+                    "min_team_required": 0,
+                    "max_days": 10,
+                    "direct_required":3,
+                    "rank_name":"star3",
+                    "value": 25
+                },
+                {
+                    "min_team_required": 0,
+                    "max_days": 10,
+                    "direct_required":4,
+                    "rank_name":"star4",
+                    "value": 25
+                }
+            ]
+        }
     }
 })
 const plan = new mongoose.model('plan', planSchema)

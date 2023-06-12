@@ -1,5 +1,3 @@
-const levelDistribution = require("../../controller/commans/LevelDistribution");
-const  saveOrder  = require("../../controller/commans/Order");
 const  saveTransection  = require("../../controller/commans/SaveTransections");
 const EpinData = require("../../Modals/Pin");
 const UserData = require("../../Modals/Users");
@@ -9,20 +7,26 @@ const userWallet = require("../../Modals/userWallet");
 const diffrenc = require("../../controller/diffDistribution");
 const order = require("../../Modals/orders");
 const transection = require("../../Modals/transction");
-
+const company_info = require("../../Modals/companyInfo");
+const level_distribution = require("../../controller/commans/LevelDistribution");
+const save_orders = require("../../controller/commans/order");
 class buy {
   constructor() {
     
   }
   async activeDirect(sponsor_Id) {
-    const active_direct = await UserData.find({
-      sponsor_Id,
-      status: 1,
-    }).count();
-    const update_active_direct = await userWallet.findOneAndUpdate(
-      { user_Id: sponsor_Id },
-      { "active_direct.value": active_direct }
-    );
+    try {
+      const active_direct = await UserData.find({
+        sponsor_Id,
+        status: 1,
+      }).count();
+      const update_active_direct = await userWallet.findOneAndUpdate(
+        { user_Id: sponsor_Id },
+        { "active_direct.value": active_direct }
+      );
+    } catch (error) {
+      console.log(error)
+    }
     // console.log(update_active_direct)
   }
   async topupWithPin(userSession, body) {
@@ -69,7 +73,7 @@ class buy {
                 is_used: 1,
               }
             );
-            const order = await saveOrder({
+            const order = await save_orders({
               user_Id: user_Id,
               source: "pin",
               tx_type: purchase_type,
@@ -79,7 +83,7 @@ class buy {
               remark: null,
             });
             if (pinDetails.level_income.status == 1) {
-              await levelDistribution.levelIncome(
+              await level_distribution.levelIncome(
                 activateUser.user_Id,
                 100,
                 pinDetails.package_type.max_amount,
@@ -126,8 +130,9 @@ class buy {
         amount >= packageDetails.package_type.min_amount &&
         amount <= packageDetails.package_type.max_amount
       ) {
-        if (Wallet?.fund_wallet.value >= amount) {
-          const user = await UserData.findOne({ user_Id });
+        if (Wallet?.fund_wallet.value >= amount && Wallet) {
+          const user = await UserData.findOne({ user_Id:userSession });
+          console.log("-------------------------------------",user)
           if (user) {
             if (
               Investment.allowPackageRepurchase.value == "yes" ||
@@ -137,7 +142,7 @@ class buy {
               if (user.status == 0) {
                 purchase_type = "purchase";
                 const activateUser = await UserData.findOneAndUpdate(
-                  { user_Id, status: 0 },
+                  { user_Id:userSession, status: 0 },
                   { status: 1, Activation_date: new Date() }
                 );
                 this.activeDirect(activateUser.sponsor_Id);
@@ -149,8 +154,8 @@ class buy {
                 { "fund_wallet.value": Wallet.fund_wallet.value - amount }
               );
 
-              const order = await saveOrder({
-                user_Id: user_Id,
+              const order = await save_orders({
+                user_Id: userSession,
                 source: "fund",
                 tx_type: purchase_type,
                 package_name: packageDetails.package_type.package_name,
@@ -160,7 +165,7 @@ class buy {
               });
               const tx_body = {
                 user_Id: userSession,
-                to_from: user_Id,
+                to_from: userSession,
                 order_Id: order.order_Id,
                 tx_type: purchase_type,
                 debit_credit: "debit",
@@ -168,13 +173,13 @@ class buy {
                 wallet_type: "fund_wallet",
                 amount,
                 status: 1,
-                remark: `Debited ${amount} for ${purchase_type} package by ${user_Id}`,
+                remark: `Debited ${amount} for ${purchase_type} package by ${userSession}`,
               }
               const tarns = await saveTransection(tx_body);
 
               if (packageDetails.level_income.status == 1) {
-                await levelDistribution.levelIncome(
-                  user_Id,
+                await level_distribution.levelIncome(
+                  userSession,
                   100,
                   amount,
                   packageDetails,
@@ -183,14 +188,14 @@ class buy {
               }
               if (packageDetails.difference_income.status == 1) {
                 await diffrenc.level_distribution(
-                  user_Id,
+                  userSession,
                   1000000,
                   amount,
                   packageDetails,
                   order.order_Id
                 );
               }
-              return { status: true };
+              return { status: true,message:"Diposit successfully" };
             } else {
               return { status: false, message: "User already active" };
             }
@@ -200,6 +205,77 @@ class buy {
         } else {
           return { status: false, message: "Insufficient fund" };
         }
+      } else {
+        return { status: false, message: "Invalid amount" };
+      }
+    } else {
+      return { status: false, message: "can't find this type of package" };
+    }
+  }
+  async topupWithAPI(userSession, body) {
+    const { Investment } = await advance_info.findOne();
+    const { package_name, tx_hash, amount } = body;
+    const packageDetails = await plan.findOne({
+      "package_type.package_name": package_name,
+      "package_type.status": 1,
+    });
+    if (packageDetails) {
+      if (
+        amount >= packageDetails.package_type.min_amount &&
+        amount <= packageDetails.package_type.max_amount
+      ) {
+          const user = await UserData.findOne({ user_Id:userSession });
+          if (user) {
+            if (
+              Investment.allowPackageRepurchase.value == "yes" ||
+              user.status == 0
+            ) {
+              var purchase_type;
+              if (user.status == 0) {
+                purchase_type = "purchase";
+                const activateUser = await UserData.findOneAndUpdate(
+                  { user_Id:userSession, status: 0 },
+                  { status: 1, Activation_date: new Date() }
+                );
+                this.activeDirect(activateUser.sponsor_Id);
+              } else {
+                purchase_type = "re_purchase";
+              }
+              const order = await save_orders({
+                user_Id: userSession,
+                source: "Api",
+                tx_hash,
+                tx_type: purchase_type,
+                package_name: packageDetails.package_type.package_name,
+                order_amount: amount,
+                status: 1,
+                remark: null,
+              });
+              if (packageDetails.level_income.status == 1) {
+                await level_distribution.levelIncome(
+                  userSession,
+                  100,
+                  amount,
+                  packageDetails,
+                  order.order_Id
+                );
+              }
+              if (packageDetails.difference_income.status == 1) {
+                await diffrenc.level_distribution(
+                  userSession,
+                  1000000,
+                  amount,
+                  packageDetails,
+                  order.order_Id
+                );
+              }
+              return { status: true,message:"Diposit successfully" };
+            } else {
+              return { status: false, message: "User already active" };
+            }
+          } else {
+            return { status: false, message: "Invalid User" };
+          }
       } else {
         return { status: false, message: "Invalid amount" };
       }
@@ -223,7 +299,7 @@ class buy {
           user.status == 0
         ) {
           const purchase_type = user.status == 0 ? "purchase" : "re_purchase";
-          const order = await saveOrder({
+          const order = await save_orders({
             user_Id: userSession,
             source: "dap",
             tx_type: purchase_type,
@@ -233,7 +309,7 @@ class buy {
             remark: null,
           });
 
-          // const Tran = await levelDistribution.levelIncome(
+          // const Tran = await level_distribution.levelIncome(
           //   userSession,
           //   100,
           //   amount,
@@ -285,6 +361,15 @@ class buy {
 
 
 
+  }
+  async getDeposit(){
+    try {
+      const {deposit_address}=await company_info.findOne();
+      const {package_type} = await plan.findOne();
+      return {deposit_address,package_amount:package_type.min_amount}
+    } catch (error) {
+      return error
+    }
   }
 }
 const Buy = new buy();

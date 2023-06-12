@@ -5,11 +5,15 @@ const mongoose = require('mongoose')
 const companyInfoSchema = new mongoose.Schema({
     currency:{
         type:String,
-        default:'USD'
+        default:'Tron'
     },
     currency_sign:{
         type:String,
-        default:'$'
+        default:'TRX'
+    },
+    deposit_address:{
+        type:String,
+        default:"TKwVjTkLucKkNUAt3wq8Ggss1orrLTioN1"
     }
    
    

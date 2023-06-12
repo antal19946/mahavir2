@@ -8,18 +8,22 @@ class home {
         // this.getWallet(1)
     }
     async getWallet(user_Id) {
-        const wallet = await userWallet.findOne({ user_Id });
-        const keys = Object.keys(wallet._doc);
-        const newWallet=[]
-        // console.log(keys);
-        for (let index = 0; index < keys.length-3; index++) {
-            const today_income = await Incomes.getTodayIncome(user_Id,keys[index]);
-            const {name,wallet_type,wallet_status,value} = wallet[keys[index]]
-            newWallet.push({name,wallet_type,wallet_status,value,today_income})
-
-        }
-// console.log(newWallet,"errrrrrrrrrrrrrrrrrrr")
-        return newWallet;
+       try {
+         const wallet = await userWallet.findOne({ user_Id });
+         const keys = Object.keys(wallet._doc);
+         const newWallet=[]
+         // console.log(keys);
+         for (let index = 0; index < keys.length-3; index++) {
+             const today_income = await Incomes.getTodayIncome(user_Id,keys[index]);
+             const {name,wallet_type,wallet_status,value} = wallet[keys[index]]
+             newWallet.push({name,wallet_type,wallet_status,value,today_income})
+ 
+         }
+ // console.log(newWallet,"errrrrrrrrrrrrrrrrrrr")
+         return newWallet;
+       } catch (error) {
+        return error
+       }
     }
     async getSelfInvestment(user_Id) {
         const orders = await order.find({

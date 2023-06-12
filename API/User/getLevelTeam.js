@@ -1,6 +1,6 @@
 const UserData = require("../../Modals/Users");
 const  homeData  = require("./homeData");
-const  User  = require("./user");
+const user_data = require("./user");
 
 class Team{
     constructor(){
@@ -11,7 +11,7 @@ class Team{
         const direct=[];
         for (let index = 0; index < level_1.length; index++) {
             let{user_Id,user_name,status,joining_date,Activation_date,sponsor_Id}=level_1[index]
-            const profile = await User.getProfile(sponsor_Id)
+            const profile = await user_data.getProfile(sponsor_Id)
             const getInvest = await homeData.getSelfInvestment(user_Id)
             const update = {user_Id,user_name,status,joining_date,Activation_date,investment:getInvest,sponsor:profile.user_name};
             direct.push(update)

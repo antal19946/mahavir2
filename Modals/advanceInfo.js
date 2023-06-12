@@ -177,7 +177,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"no"
+                default:"yes"
             }
         },
     },
@@ -189,11 +189,11 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             options:{
                 type:String,
-                default:"pin,fund,dap"
+                default:"pin,fund,dap,API"
             },
             value:{
                 type:String,
-                default:"dap"
+                default:"API"
             }
         },
         re_topup_type:{
@@ -207,7 +207,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"dap"
+                default:"fund"
             }
         },
         allowPackageRepurchase:{
@@ -221,7 +221,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"yes"
+                default:"no"
             }
         }
         
@@ -234,6 +234,10 @@ const advanceInfoSchema = new mongoose.Schema({
         max_withdrawal:{
             type:Number,
             default:1e10
+        },
+        tx_charge:{
+            type:Number,
+            default:0
         }
     }
    

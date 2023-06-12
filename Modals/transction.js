@@ -15,6 +15,10 @@ const transectionSchema = new mongoose.Schema({
     order_Id:{
         type:Number
     },
+    stake_order_Id:{
+        type:Number,
+        default:null
+    },
     tx_type:{
         type:String
     },
@@ -31,8 +35,16 @@ const transectionSchema = new mongoose.Schema({
         type:String,
         default:null
     },
+    level_distribution_status:{
+        type:Number,
+        default:0
+    },
     amount:{
         type:Number
+    },
+    tx_charge:{
+        type:Number,
+        default:0
     },
     ben_per:{
         type:Number,

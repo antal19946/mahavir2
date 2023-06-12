@@ -1,13 +1,15 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const user_data = require('../API/User/user');
 // const config = require('config')
-const dbName = "mahavir"
-const uri = `mongodb://0.0.0.0:27017/${dbName}`
+const dbName = "mahavir_test"
+const uri = `mongodb+srv://ravik203305:ARVind123456@cluster0.rqsydxi.mongodb.net/${dbName}`
 mongoose.set("strictQuery", false);
 mongoose.connect(uri,{
    
     useNewUrlParser:true
 }).then(()=>{
     console.log('mongoose connected successfully')
+    user_data.getAdvance()
 }).catch((e)=>{
     console.log(e)
 })

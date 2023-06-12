@@ -106,7 +106,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:0
+         default:1
         },
         value:{
          type:Number,
@@ -176,11 +176,11 @@ const user_wallet = new mongoose.Schema({
         },
         count_in_main_wallet:{
          type:Number,
-         default:0
+         default:1
         },
         wallet_status:{
          type:Number,
-         default:0
+         default:1
         },
         value:{
          type:Number,
@@ -232,7 +232,33 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
+         default:1
+        },
+        value:{
+         type:Number,
          default:0
+        },
+        updated_on:{
+         type:Date,
+         default:null
+       }
+     },
+     royalty_income:{
+        name:{
+         type:String,
+         default:" Royalty Income"
+        },
+        wallet_type:{
+         type:String,
+         default:"income"
+        },
+        count_in_main_wallet:{
+         type:Number,
+         default:1
+        },
+        wallet_status:{
+         type:Number,
+         default:1
         },
         value:{
          type:Number,
@@ -284,7 +310,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,
@@ -310,7 +336,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,
@@ -325,6 +351,28 @@ const user_wallet = new mongoose.Schema({
       name:{
          type:String,
          default:"Active direct"
+        },
+        wallet_type:{
+         type:String,
+         default:"Team"
+        },
+        wallet_status:{
+         type:Number,
+         default:1
+        },
+        value:{
+         type:Number,
+         default:0
+        },
+        updated_on:{
+         type:Date,
+         default:null
+       }
+     },
+     active_single_leg:{
+      name:{
+         type:String,
+         default:"Single Leg Team"
         },
         wallet_type:{
          type:String,
