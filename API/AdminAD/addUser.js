@@ -23,7 +23,8 @@ class addUser {
             const user = new UserData({
                 status:1,
                 user_Id:user_Id+1,
-                sponsor_Id:1
+                sponsor_Id:1,
+                Activation_date:new Date()
             });
             const result = await user.save()
             console.log(result)       

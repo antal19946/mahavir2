@@ -10,6 +10,23 @@ class Single_leg {
   constructor() {
     // this.singleLegRank()
   }
+  async single_leg_rank(){
+    try {
+      const allUsers = await UserData.find({ status: 1 }).sort({
+        Activation_date: -1,
+      });
+      const { single_leg_plan } = await plan.findOne({
+        "single_leg_plan.status": 1,
+      });
+      const totalUser = allUsers.length - 1;
+      for (let index = 0; index < allUsers.length; index++) {
+        const element = array[index];
+        
+      }
+    } catch (error) {
+      
+    }
+  }
   async singleLegRank() {
   try {
       const allUsers = await UserData.find({ status: 1 }).sort({

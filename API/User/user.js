@@ -221,7 +221,8 @@ class user {
         royalty_plan.ranks.map((rank)=>{
           let rrr = {
             rank_name:rank.rank_name,
-            status:0
+            status:0,
+            remaining_time:null
           }
           royalty_rank.push(rrr)
         })
