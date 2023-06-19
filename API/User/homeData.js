@@ -16,7 +16,7 @@ class home {
          for (let index = 0; index < keys.length-3; index++) {
              const today_income = await Incomes.getTodayIncome(user_Id,keys[index]);
              const {name,wallet_type,wallet_status,value} = wallet[keys[index]]
-             newWallet.push({name,wallet_type,wallet_status,value,today_income})
+             newWallet.push({name,wallet_type,wallet_status,value,today_income,key:keys[index]})
  
          }
  // console.log(newWallet,"errrrrrrrrrrrrrrrrrrr")

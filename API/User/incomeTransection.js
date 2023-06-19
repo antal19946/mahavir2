@@ -30,6 +30,7 @@ class income{
           },source:param,
           status:1
         });
+        console.log(todayIncome)
         const total_today_income = todayIncome.reduce((acc, obj) => acc + obj.amount, 0);
 
     return total_today_income;

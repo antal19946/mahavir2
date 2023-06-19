@@ -46,77 +46,77 @@ const planSchema = new mongoose.Schema({
             },
             value: {
                 type: String,
-                default: "percentage"
+                default: "fix"
             }
         },
         level_1: {
             direct_required: {
                 type: Number,
-                default: 0
+                default: 1
             },
             value: {
                 type: Number,
-                default: 10
+                default: 30
             }
         },
         level_2: {
             direct_required: {
                 type: Number,
-                default: 0
+                default: 2
+            },
+            value: {
+                type: Number,
+                default: 15
+            }
+        },
+        level_3: {
+            direct_required: {
+                type: Number,
+                default: 3
             },
             value: {
                 type: Number,
                 default: 9
             }
         },
-        level_3: {
-            direct_required: {
-                type: Number,
-                default: 0
-            },
-            value: {
-                type: Number,
-                default: 8
-            }
-        },
         level_4: {
             direct_required: {
                 type: Number,
-                default: 0
+                default: 4
             },
             value: {
                 type: Number,
-                default: 7
+                default: 3
             }
         },
         level_5: {
             direct_required: {
                 type: Number,
-                default: 0
+                default: 5
             },
             value: {
                 type: Number,
-                default: 6
+                default: 3
             }
         },
         level_6: {
             direct_required: {
                 type: Number,
-                default: 0
+                default: 6
             },
             value: {
                 type: Number,
-                default: 5
+                default: 3
             }
         },
         level_7: {
             direct_required: {
                 type: Number,
-                default: 0
+                default: 7
             },
             value: {
                 type: Number,
-                default: 4
+                default: 3
             }
         },
         level_8: {
@@ -126,7 +126,7 @@ const planSchema = new mongoose.Schema({
             },
             value: {
                 type: Number,
-                default: 3
+                default: 0
             }
         },
         level_9: {
@@ -136,7 +136,7 @@ const planSchema = new mongoose.Schema({
             },
             value: {
                 type: Number,
-                default: 2
+                default: 0
             }
         },
         level_10: {
@@ -146,7 +146,7 @@ const planSchema = new mongoose.Schema({
             },
             value: {
                 type: Number,
-                default: 1
+                default: 0
             }
         },
         level_11: {
