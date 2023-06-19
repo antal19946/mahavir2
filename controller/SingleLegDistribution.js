@@ -8,23 +8,86 @@ const Incomes = require("../API/User/incomeTransection");
 
 class Single_leg {
   constructor() {
-    // this.singleLegRank()
+    // this.single_leg_rank_remaining_time()
   }
-  async single_leg_rank(){
+  async single_leg_rank_remaining_time(){
     try {
+      const currentDate = new Date();
       const allUsers = await UserData.find({ status: 1 }).sort({
-        Activation_date: -1,
+        Activation_date: 1,
       });
       const { single_leg_plan } = await plan.findOne({
         "single_leg_plan.status": 1,
       });
+      const { ranks } = single_leg_plan;
       const totalUser = allUsers.length - 1;
       for (let index = 0; index < allUsers.length; index++) {
-        const element = array[index];
-        
+        const { user_Id } = allUsers[index];
+        const mySingleLeg = totalUser - index;
+        console.log(totalUser,":",index,":",user_Id)
+        const getWallet = await userWallet.findOne({user_Id})
+        if (getWallet) {
+          const { active_direct } = await userWallet?.findOneAndUpdate(
+            { user_Id:getWallet.user_Id },
+            { "active_single_leg.value": mySingleLeg }
+          );
+          if (active_direct) {
+            const { single_leg_rank } = await Ranks.findOne({ user_Id });
+            if (single_leg_rank) {
+              const Updated_rank = single_leg_rank;
+              const matchingIndices = ranks.reduce((indices, rank, index) => {
+                if (
+                  mySingleLeg >= rank.min_team &&
+                  mySingleLeg <= rank.max_team &&
+                  Updated_rank[index].remaining_time == null
+                ) {
+                  
+              const futureDate = new Date(currentDate);
+              futureDate.setDate(futureDate.getDate() + parseInt(rank.max_days));
+                  Updated_rank[index].remaining_time = futureDate;
+                  indices.push(index);
+                }
+                return indices;
+              }, []);
+              const rankUpdate = await Ranks.findOneAndUpdate(
+              { user_Id },
+              { single_leg_rank: Updated_rank }
+            );
+            }
+          }
+        }
+      }
+      this.single_rank_closing(ranks)
+    } catch (error) {
+      return{status:false,error}
+    }
+  }
+  async single_rank_closing(ranks){
+    try {
+      const currentDate = new Date();
+      const allUser = await Ranks.find();
+      for (let index = 0; index < allUser.length; index++) {
+        const {user_Id,single_leg_rank} = allUser[index];
+        const {active_single_leg,active_direct} = await userWallet.findOne({user_Id});
+        const Updated_rank = single_leg_rank;
+        const matchingIndices = ranks.reduce((indices, rank, index) => {
+          if (
+            currentDate <= Updated_rank[index].remaining_time &&
+            active_direct.value >= rank.direct_required
+          ) {
+            
+            Updated_rank[index].status = 1;
+            indices.push(index);
+          }
+          return indices;
+        }, []);
+        const rankUpdate = await Ranks.findOneAndUpdate(
+          { user_Id },
+          { single_leg_rank: Updated_rank }
+        );
       }
     } catch (error) {
-      
+      return{status:false,error}
     }
   }
   async singleLegRank() {

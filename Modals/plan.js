@@ -477,6 +477,7 @@ const planSchema = new mongoose.Schema({
                     "min_team": 10,
                     "max_team": 10000,
                     "direct_required":1,
+                    "max_days":3,
                     "rank_name":"star1",
                     "value": 25
                 },
@@ -484,6 +485,7 @@ const planSchema = new mongoose.Schema({
                     "min_team": 20,
                     "max_team": 10000,
                     "direct_required":1,
+                    "max_days":3,
                     "rank_name":"star2",
                     "value": 25
                 },
@@ -491,6 +493,7 @@ const planSchema = new mongoose.Schema({
                     "min_team": 30,
                     "max_team": 10000,
                     "direct_required":1,
+                    "max_days":3,
                     "rank_name":"star3",
                     "value": 25
                 },
@@ -498,6 +501,7 @@ const planSchema = new mongoose.Schema({
                     "min_team": 40,
                     "max_team": 10000,
                     "direct_required":1,
+                    "max_days":3,
                     "rank_name":"star4",
                     "value": 25
                 }
