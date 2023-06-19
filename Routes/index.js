@@ -489,7 +489,7 @@ router.get('/get_deposit_details', async (req, res) => {
     res.json({ result:advance })
 })
 router.get('/update_singleleg_and_rank', async (req, res) => {
-   const result =  await singleLeg.singleLegRank()
+   const result =  await singleLeg.single_leg_rank_remaining_time()
     res.json({ result })
 })
 

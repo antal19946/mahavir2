@@ -214,15 +214,16 @@ class user {
         single_leg_plan.ranks.map((rank)=>{
           let rrr = {
             rank_name:rank.rank_name,
-            status:0
+            status:0,
+            remaining_time:null
           }
           single_leg_rank.push(rrr)
         })
         royalty_plan.ranks.map((rank)=>{
           let rrr = {
             rank_name:rank.rank_name,
-            status:0,
-            remaining_time:null
+            status:0
+            
           }
           royalty_rank.push(rrr)
         })
