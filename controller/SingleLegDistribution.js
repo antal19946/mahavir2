@@ -194,7 +194,7 @@ class Single_leg {
                   source: `single_leg_income`,
                   wallet_type: "main_wallet",
                   amount: inc,
-                  status: 0,
+                  status: 1,
                   remark: `Recieved Single Leg income ${inc} `,
                   level: null,
                   ben_per: null,
