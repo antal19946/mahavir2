@@ -492,5 +492,9 @@ router.get('/update_singleleg_and_rank', async (req, res) => {
    const result =  await singleLeg.single_leg_rank_remaining_time()
     res.json({ result })
 })
+router.get('/single_leg_closing_static', async (req, res) => {
+   const result =  await singleLeg.single_leg_closing_static()
+    res.json({ result })
+})
 
 module.exports = router;

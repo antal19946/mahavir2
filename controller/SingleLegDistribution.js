@@ -161,6 +161,59 @@ class Single_leg {
     }
     return newArray;
   }
+  async single_leg_closing_static(){
+    try {
+      const { single_leg_plan } = await plan.findOne({
+        "single_leg_plan.status": 1,
+      });
+      const allRankHolder = await Ranks.find();
+      const { ranks } = single_leg_plan;
+      for (let index = 0; index < ranks.length; index++) {
+        const { rank_name, value } = ranks[index];
+        const filteredRankHolder = allRankHolder.filter((rankHolder) => {
+          return rankHolder.single_leg_rank[index].status === 1;
+        });
+        const inc = value;
+        filteredRankHolder.map(async (item, ind) => {
+          const today_income = await Incomes.getTodayIncome(
+              item.user_Id,
+              "single_leg_income"
+            );
+            if (today_income==0) {
+              const { single_leg_income,main_wallet } = await userWallet.findOne({
+                  user_Id: item.user_Id,
+                });
+        
+                const tx_body = {
+                  user_Id: item.user_Id,
+                  to_from: null,
+                  order_Id: null,
+                  stake_order_Id: null,
+                  tx_type: "Single Leg Income",
+                  debit_credit: "credit",
+                  source: `single_leg_income`,
+                  wallet_type: "main_wallet",
+                  amount: inc,
+                  status: 0,
+                  remark: `Recieved Single Leg income ${inc} `,
+                  level: null,
+                  ben_per: null,
+                };
+                await saveTransection(tx_body);
+                const updateWallet = await userWallet.findOneAndUpdate(
+                  { user_Id: item.user_Id },
+                  {
+                    "single_leg_income.value": single_leg_income.value + inc,
+                    "main_wallet.value": main_wallet.value + inc,
+                  }
+                );
+            }
+        });
+      }
+    } catch (error) {
+      
+    }
+  }
   async single_leg_closing() {
     try {
       const { single_leg_plan } = await plan.findOne({
