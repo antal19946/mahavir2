@@ -175,11 +175,6 @@ class Single_leg {
         });
         const inc = value;
         filteredRankHolder.map(async (item, ind) => {
-          const today_income = await Incomes.getTodayIncome(
-              item.user_Id,
-              "single_leg_income"
-            );
-            if (today_income==0) {
               const { single_leg_income,main_wallet } = await userWallet.findOne({
                   user_Id: item.user_Id,
                 });
@@ -203,11 +198,11 @@ class Single_leg {
                 const updateWallet = await userWallet.findOneAndUpdate(
                   { user_Id: item.user_Id },
                   {
-                    "single_leg_income.value": single_leg_income.value + inc,
-                    "main_wallet.value": main_wallet.value + inc,
+                    "single_leg_income.value": single_leg_income.value + parseInt(inc),
+                    "main_wallet.value": main_wallet.value + parseInt(inc),
                   }
                 );
-            }
+            
         });
       }
     } catch (error) {
