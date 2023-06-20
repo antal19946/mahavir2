@@ -174,36 +174,39 @@ class Single_leg {
           return rankHolder.single_leg_rank[index].status === 1;
         });
         const inc = value;
-        filteredRankHolder.map(async (item, ind) => {
-              const { single_leg_income,main_wallet } = await userWallet.findOne({
-                  user_Id: item.user_Id,
-                });
+       for (let index = 0; index < filteredRankHolder.length; index++) {
+        const {user_Id} = filteredRankHolder[index];
         
-                const tx_body = {
-                  user_Id: item.user_Id,
-                  to_from: null,
-                  order_Id: null,
-                  stake_order_Id: null,
-                  tx_type: "Single Leg Income",
-                  debit_credit: "credit",
-                  source: `single_leg_income`,
-                  wallet_type: "main_wallet",
-                  amount: inc,
-                  status: 1,
-                  remark: `Recieved Single Leg income ${inc} `,
-                  level: null,
-                  ben_per: null,
-                };
-                await saveTransection(tx_body);
-                const updateWallet = await userWallet.findOneAndUpdate(
-                  { user_Id: item.user_Id },
-                  {
-                    "single_leg_income.value": single_leg_income.value + parseInt(inc),
-                    "main_wallet.value": main_wallet.value + parseInt(inc),
-                  }
-                );
-            
-        });
+        const { single_leg_income,main_wallet } = await userWallet.findOne({
+            user_Id
+          });
+  
+          const tx_body = {
+            user_Id: user_Id,
+            to_from: null,
+            order_Id: null,
+            stake_order_Id: null,
+            tx_type: "Single Leg Income",
+            debit_credit: "credit",
+            source: `single_leg_income`,
+            wallet_type: "main_wallet",
+            amount: inc,
+            status: 1,
+            remark: `Recieved Single Leg income ${inc} `,
+            level: null,
+            ben_per: null,
+          };
+          await saveTransection(tx_body);
+          const updateWallet = await userWallet.findOneAndUpdate(
+            { user_Id: user_Id },
+            {
+              "single_leg_income.value": single_leg_income.value + parseInt(inc),
+              "main_wallet.value": main_wallet.value + parseInt(inc),
+            }
+          );
+      
+       }
+       
       }
     } catch (error) {
       
