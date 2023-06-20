@@ -81,7 +81,7 @@ class setup {
     async addDefaultPackage() {
         const body = {
             package_name: 'starter',
-            min_amount: 2000,
+            min_amount: 2,
             mex_amount: 1000000000
         }
         const defaultPackage = await Package.createPackage(body);
