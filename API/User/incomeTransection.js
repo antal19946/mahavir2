@@ -9,7 +9,7 @@ class income{
                 const {to_from,amount,level,ben_per,time,remark}=incomes[index];
                 const profile = await user_data.getProfile(to_from);
                 newIncome.push({
-                    to_from:profile.user_name,
+                    to_from:profile?.user_name,
                     amount,
                     level,
                     ben_per,
