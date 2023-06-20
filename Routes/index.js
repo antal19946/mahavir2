@@ -23,6 +23,7 @@ const Dashboard = require("../API/AdminAD/DashboardData");
 const Withdrawal = require("../API/AdminAD/withdrawal");
 const user_data = require("../API/User/user");
 const add_user = require("../API/AdminAD/addUser");
+const planSetting = require("../API/AdminAD/PlanSetting");
 var router = express.Router();
 var jsonParser = bodyParser.json();
 router.use(jsonParser)
@@ -188,6 +189,34 @@ router.post('/add_fund', async (req, res) => {
         if (tokenStatus) {
             const result =  await Fund.addFund(req.body)
             res.json({tokenStatus, status: true, result,message:result.message });
+        } else {
+            res.json({ tokenStatus, message: "Failed to authenticate token."  });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+})
+router.post('/single_leg_income_setting', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await Auth.verifyAdminToken(Authorization_Token);
+        if (tokenStatus) {
+            const result =  await planSetting.SL_distribution_setting(req.body)
+            res.json({tokenStatus, status: true, result });
+        } else {
+            res.json({ tokenStatus, message: "Failed to authenticate token."  });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+})
+router.get('/get_single_leg_ranks', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await Auth.verifyAdminToken(Authorization_Token);
+        if (tokenStatus) {
+            const result =  await planSetting.get_SL_rank()
+            res.json({tokenStatus, status: true, result });
         } else {
             res.json({ tokenStatus, message: "Failed to authenticate token."  });
         }

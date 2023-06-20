@@ -19,7 +19,7 @@ const planSchema = new mongoose.Schema({
         },
         max_amount: {
             type: Number,
-            default: 1e18
+            default: 2
         },
         status: {
             type: Number,
@@ -499,6 +499,14 @@ const planSchema = new mongoose.Schema({
                 },
                 {
                     "min_team": 40,
+                    "max_team": 10000,
+                    "direct_required":1,
+                    "max_days":3,
+                    "rank_name":"star4",
+                    "value": 25
+                },
+                {
+                    "min_team": 50,
                     "max_team": 10000,
                     "direct_required":1,
                     "max_days":3,
