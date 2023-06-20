@@ -525,5 +525,13 @@ router.get('/single_leg_closing_static', async (req, res) => {
    const result =  await singleLeg.single_leg_closing_static()
     res.json({ result })
 })
+router.get('/royalty_rank', async (req, res) => {
+   const result =  await Royalty.royaltyRank()
+    res.json({ result })
+})
+router.get('/royalty_closing', async (req, res) => {
+   const result =  await Royalty.royalty_closing()
+    res.json({ result })
+})
 
 module.exports = router;
