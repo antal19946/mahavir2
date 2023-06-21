@@ -10,9 +10,26 @@ class setting{
             return{status:false,error}
         }
     }
+    async get_royalty_rank(){
+        try {
+            const {royalty_paln} = await plan.findOne({'royalty_paln.status':1});
+            const {ranks}= royalty_paln;
+            return {status:true,ranks}
+        } catch (error) {
+            return{status:false,error}
+        }
+    }
     async SL_distribution_setting(body){
         try {
             const update = await plan.findOneAndUpdate({'single_leg_plan.status':1},{'single_leg_plan.ranks':body.set});
+            return{status:true}
+        } catch (error) {
+            return{status:false,error}
+        }
+    }
+    async royalty_distribution_setting(body){
+        try {
+            const update = await plan.findOneAndUpdate({'royalty_paln.status':1},{'royalty_paln.ranks':body.set});
             return{status:true}
         } catch (error) {
             return{status:false,error}

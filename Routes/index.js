@@ -210,12 +210,40 @@ router.post('/single_leg_income_setting', async (req, res) => {
         res.json({ status: false, message: "Failed to authenticate token." });
     }
 })
+router.post('/royalty_income_setting', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await Auth.verifyAdminToken(Authorization_Token);
+        if (tokenStatus) {
+            const result =  await planSetting.royalty_distribution_setting(req.body)
+            res.json({tokenStatus, status: true, result });
+        } else {
+            res.json({ tokenStatus, message: "Failed to authenticate token."  });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+})
 router.get('/get_single_leg_ranks', async (req, res) => {
     const Authorization_Token = await req.header("Authorization");
     if (Authorization_Token) {
         const {tokenStatus,resp} = await Auth.verifyAdminToken(Authorization_Token);
         if (tokenStatus) {
             const result =  await planSetting.get_SL_rank()
+            res.json({tokenStatus, status: true, result });
+        } else {
+            res.json({ tokenStatus, message: "Failed to authenticate token."  });
+        }
+    } else {
+        res.json({ status: false, message: "Failed to authenticate token." });
+    }
+})
+router.get('/get_royalty_ranks', async (req, res) => {
+    const Authorization_Token = await req.header("Authorization");
+    if (Authorization_Token) {
+        const {tokenStatus,resp} = await Auth.verifyAdminToken(Authorization_Token);
+        if (tokenStatus) {
+            const result =  await planSetting.get_royalty_rank()
             res.json({tokenStatus, status: true, result });
         } else {
             res.json({ tokenStatus, message: "Failed to authenticate token."  });
