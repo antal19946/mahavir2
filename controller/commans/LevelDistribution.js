@@ -45,7 +45,7 @@ class Distribution {
               source: `level_income`,
               wallet_type: 'main_wallet',
               amount: inc, status: 1,
-              remark: `Recieved direct income from ${user_Id}`,
+              remark: `Recieved direct income`,
               level:index
             }
             const tarnsection = await saveTransection(tx_body);

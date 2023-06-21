@@ -106,7 +106,7 @@ const user_wallet = new mongoose.Schema({
         },
         wallet_status:{
          type:Number,
-         default:1
+         default:0
         },
         value:{
          type:Number,
@@ -350,7 +350,7 @@ const user_wallet = new mongoose.Schema({
      active_direct:{
       name:{
          type:String,
-         default:"Active direct"
+         default:"Active Direct"
         },
         wallet_type:{
          type:String,
