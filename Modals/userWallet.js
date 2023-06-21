@@ -220,7 +220,7 @@ const user_wallet = new mongoose.Schema({
      single_leg_income:{
         name:{
          type:String,
-         default:"Single Leg Income"
+         default:"Global Income"
         },
         wallet_type:{
          type:String,
@@ -372,7 +372,7 @@ const user_wallet = new mongoose.Schema({
      active_single_leg:{
       name:{
          type:String,
-         default:"Single Leg Team"
+         default:"Global Team"
         },
         wallet_type:{
          type:String,

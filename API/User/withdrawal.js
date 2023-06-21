@@ -13,7 +13,7 @@ class withdraw {
 
         if ( amount>=withdrawal.min_withdrawal ) {
             if (main_wallet.value >= amount) {
-                const updateWallet = await OneAndUpdate({user_Id},{'main_wallet.value':main_wallet.value-amount,'total_withdrawal.value':(total_withdrawal.value+parseInt(amount))})
+                const updateWallet = await userWallet.findOneAndUpdate({user_Id},{'main_wallet.value':main_wallet.value-amount,'total_withdrawal.value':(total_withdrawal.value+parseInt(amount))})
             const tx_body = {
                 user_Id,
                 to_from: null,
