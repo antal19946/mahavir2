@@ -12,10 +12,11 @@ class setting{
     }
     async get_royalty_rank(){
         try {
-            const {royalty_paln} = await plan.findOne({'royalty_paln.status':1});
-            const {ranks}= royalty_paln;
+            const {royalty_plan} = await plan.findOne({'royalty_plan.status':1});
+            const {ranks}= royalty_plan;
             return {status:true,ranks}
         } catch (error) {
+            console.log(error)
             return{status:false,error}
         }
     }
@@ -29,7 +30,7 @@ class setting{
     }
     async royalty_distribution_setting(body){
         try {
-            const update = await plan.findOneAndUpdate({'royalty_paln.status':1},{'royalty_paln.ranks':body.set});
+            const update = await plan.findOneAndUpdate({'royalty_plan.status':1},{'royalty_plan.ranks':body.set});
             return{status:true}
         } catch (error) {
             return{status:false,error}
