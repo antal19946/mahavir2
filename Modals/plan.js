@@ -535,27 +535,6 @@ const planSchema = new mongoose.Schema({
                     "direct_required":1,
                     "rank_name":"star1",
                     "value": 25
-                },
-                {
-                    "min_team_required": 0,
-                    "max_days": 10,
-                    "direct_required":2,
-                    "rank_name":"star2",
-                    "value": 25
-                },
-                {
-                    "min_team_required": 0,
-                    "max_days": 10,
-                    "direct_required":3,
-                    "rank_name":"star3",
-                    "value": 25
-                },
-                {
-                    "min_team_required": 0,
-                    "max_days": 10,
-                    "direct_required":4,
-                    "rank_name":"star4",
-                    "value": 25
                 }
             ]
         }

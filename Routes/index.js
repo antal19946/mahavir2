@@ -526,7 +526,7 @@ router.get('/single_leg_closing_static', async (req, res) => {
     res.json({ result })
 })
 router.get('/royalty_rank', async (req, res) => {
-   const result =  await Royalty.royaltyRank()
+   const result =  await Royalty.royalty_rank_closing()
     res.json({ result })
 })
 router.get('/royalty_closing', async (req, res) => {

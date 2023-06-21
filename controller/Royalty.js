@@ -9,6 +9,49 @@ class royalty {
   constructor() {
     // this.royalty_closing()
   }
+  async royalty_rank_closing(){
+    try {
+      const allRankHolder = await Ranks.find();
+      const {royalty_plan}=await plan.findOne({ "royalty_plan.status": 1 })
+      const {ranks} = royalty_plan;
+      for (let index = 0; index < allRankHolder.length; index++) {
+        const {user_Id,royalty_rank} = allRankHolder[index];
+        const {Activation_date} = await UserData.findOne({user_Id});
+        const Updated_rank = royalty_rank;
+        const matchingIndices = await ranks.reduce(async(indices, rank, index) => {
+          const newDate = new Date(Activation_date);
+              const endOfDay = new Date(
+                newDate.getFullYear(),
+                newDate.getMonth(),
+                newDate.getDate() + rank.max_days
+              );
+              const active_direct = await UserData.find({
+                sponsor_Id: user_Id,
+                Activation_date: {
+                  $lt: endOfDay,
+                },
+                status: 1,
+              }).count();
+              console.log(user_Id,active_direct)
+          if (
+            active_direct >= rank.direct_required
+          ) {
+            console.log(user_Id,":",user_Id)
+            Updated_rank[index].status = 1;
+        console.log("her1",Updated_rank)
+            indices.push(index);
+            const rankUpdate = await Ranks.findOneAndUpdate(
+              { user_Id },
+              { royalty_rank: Updated_rank }
+            );
+            return user_Id;
+          }
+        }, []);
+      }
+    } catch (error) {
+      return{status:false,error}
+    }
+  }
   async royaltyRank() {
     try {
       const allUsers = await UserData.find({ status: 1 }).sort({
