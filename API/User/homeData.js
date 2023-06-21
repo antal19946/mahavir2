@@ -9,7 +9,9 @@ class home {
     }
     async getWallet(user_Id) {
        try {
-         const wallet = await userWallet.findOne({ user_Id });
+         const wallet = await userWallet.findOne({ user_Id }).sort({
+            wallet_name: -1,
+          });
          const keys = Object.keys(wallet._doc);
          const newWallet=[]
          // console.log(keys);
