@@ -52,51 +52,51 @@ class royalty {
       return{status:false,error}
     }
   }
-  async royaltyRank() {
-    try {
-      const allUsers = await UserData.find({ status: 1 }).sort({
-        Activation_date: -1,
-      });
-      const { royalty_plan } = await plan.findOne({ "royalty_plan.status": 1 });
-      const { ranks } = royalty_plan;
-      for (let index = 0; index < allUsers.length; index++) {
-        const { user_Id, Activation_date } = allUsers[index];
-        const { royalty_rank } = await Ranks.findOne({ user_Id });
-        if (royalty_rank) {
-          const Updated_rank = royalty_rank;
+  // async royaltyRank() {
+  //   try {
+  //     const allUsers = await UserData.find({ status: 1 }).sort({
+  //       Activation_date: -1,
+  //     });
+  //     const { royalty_plan } = await plan.findOne({ "royalty_plan.status": 1 });
+  //     const { ranks } = royalty_plan;
+  //     for (let index = 0; index < allUsers.length; index++) {
+  //       const { user_Id, Activation_date } = allUsers[index];
+  //       const { royalty_rank } = await Ranks.findOne({ user_Id });
+  //       if (royalty_rank) {
+  //         const Updated_rank = royalty_rank;
     
-          ranks.reduce((indices, rank, index) => {
+  //         ranks.reduce((indices, rank, index) => {
            
-              const newDate = new Date(Activation_date);
-              const endOfDay = new Date(
-                newDate.getFullYear(),
-                newDate.getMonth(),
-                newDate.getDate() + rank.max_days
-              );
-              UserData.find({
-                sponsor_Id: user_Id,
-                Activation_date: {
-                  $lt: endOfDay,
-                },
-                status: 1,
-              }).count().then(async(myDirect)=>{
-                if (myDirect>=rank.direct_required) {
-                    Updated_rank[index].status = 1;
-                    const rankUpdate = await Ranks.findOneAndUpdate(
-                        { user_Id },
-                        { royalty_rank: Updated_rank }
-                      );
-                    console.log('myDirect',newDate,endOfDay,myDirect,rank.direct_required,Updated_rank)
+  //             const newDate = new Date(Activation_date);
+  //             const endOfDay = new Date(
+  //               newDate.getFullYear(),
+  //               newDate.getMonth(),
+  //               newDate.getDate() + rank.max_days
+  //             );
+  //             UserData.find({
+  //               sponsor_Id: user_Id,
+  //               Activation_date: {
+  //                 $lt: endOfDay,
+  //               },
+  //               status: 1,
+  //             }).count().then(async(myDirect)=>{
+  //               if (myDirect>=rank.direct_required) {
+  //                   Updated_rank[index].status = 1;
+  //                   const rankUpdate = await Ranks.findOneAndUpdate(
+  //                       { user_Id },
+  //                       { royalty_rank: Updated_rank }
+  //                     );
+  //                   console.log('myDirect',newDate,endOfDay,myDirect,rank.direct_required,Updated_rank)
                   
-                }
-              });
-          }, []);
-        }
-      }
-    } catch (error) {
-      return error
-    }
-  }
+  //               }
+  //             });
+  //         }, []);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     return error
+  //   }
+  // }
   async royaltyGoal(user_Id){
     const {royalty_plan}= await plan.findOne();
     const {royalty_rank} = await Ranks.findOne({user_Id});
@@ -131,8 +131,7 @@ async royalty_closing() {
         return rankHolder.royalty_rank[index].status === 1;
       });
       const inc =
-        (royalty_plan.fix_closing_amount * (value / 100)) /
-        filteredRankHolder.length;
+        value;
       filteredRankHolder.map(async (item, ind) => {
         const today_income = await Incomes.getTodayIncome(
             item.user_Id,
