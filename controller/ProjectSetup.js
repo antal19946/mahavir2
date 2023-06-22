@@ -31,7 +31,7 @@ class setup {
             email: "demo@gmail.com",
             mobile: '1111111111',
             password: await hashPassword("test"),
-            user_name:'0x71Eb064642d22d967740e36F7a5FE7338C80D0e7',
+            user_name:'TWB8DNixF2kqV1jmf91vQtXNmk4soqzywN',
             user_Id: 1,
             status: 1,
             sponsor_Id: "",
@@ -81,7 +81,7 @@ class setup {
     async addDefaultPackage() {
         const body = {
             package_name: 'starter',
-            min_amount: 2,
+            min_amount: 1,
             mex_amount: 1000000000
         }
         const defaultPackage = await Package.createPackage(body);

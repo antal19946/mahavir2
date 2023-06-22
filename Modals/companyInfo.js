@@ -13,7 +13,7 @@ const companyInfoSchema = new mongoose.Schema({
     },
     deposit_address:{
         type:String,
-        default:"TKwVjTkLucKkNUAt3wq8Ggss1orrLTioN1"
+        default:"TSswNyFTrY85zRiwebpf79CVt5tvH6ivbY"
     }
    
    
