@@ -64,7 +64,7 @@ class user {
     }
   };
   async isMobile(mobile) {
-    if (mobile > 1000000000 && mobile < 10000000000) {
+    if (mobile > 1000000000) {
       const mobile_users = await UserData.find({ mobile }).count()
       if (mobile_users < this.advance.Registration.mobile_users.value) {
         return ({ status: true })

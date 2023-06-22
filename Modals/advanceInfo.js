@@ -149,7 +149,7 @@ const advanceInfoSchema = new mongoose.Schema({
             },
             value:{
                 type:String,
-                default:"no"
+                default:"yes"
             }
         },
         is_email_required:{
