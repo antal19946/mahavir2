@@ -153,7 +153,7 @@ class user {
         return ({ status: true, sponsor_Id:sponsor_Data.user_Id, name: sponsor_Data.name })
       }
     } else {
-      return ({ status: false, message: "Invalid sponsor", sponsor_Data })
+      return ({ status: false, message: "Invalid sponsor" })
     }
 
   }
