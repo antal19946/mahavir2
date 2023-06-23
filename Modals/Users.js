@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
   },
   sponsor_Id: {
     type: Number,
-    // required:true
+    required:true
   },
   sponsor_Name:{
     type: String,
