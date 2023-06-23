@@ -179,6 +179,24 @@ class user {
       const isexist = await UserData.findOne({ user_name: velidUserName.userName });
       const isStrongPassword =is_password_required.value=="yes"? await this.generatePassword(password):{status:true};
       const total_users = await UserData.find().count()
+      if (!isMobile.status) {
+        return isMobile
+      }
+      if (!isEmail.status) {
+        return isEmail
+      }
+      if (!velidUserName) {
+        return { status: false, message: "please enter valid username" }
+      }
+      if (!isStrongPassword.status) {
+        return isStrongPassword
+      }
+      if (isexist) {
+        return { status: false, message: "username already exist" }
+      }
+      if (!sponsor_Data.status) {
+        return sponsor_Data
+      }
       const Error = await (
         !isMobile.status
         ? isMobile
@@ -193,8 +211,12 @@ class user {
                 : !sponsor_Data.status
                   ? sponsor_Data
                   : { status: true, message: "registration success" });
-      if (Error.status) {
-        const user = new UserData({
+        const ErrorVerify = await Error.status;
+        if (!ErrorVerify) {
+          return Error;
+        }
+      if (ErrorVerify) {
+        const user = await new UserData({
           name,
           email,
           mobile,
