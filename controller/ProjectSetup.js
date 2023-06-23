@@ -34,7 +34,7 @@ class setup {
             user_name:'TWB8DNixF2kqV1jmf91vQtXNmk4soqzywN',
             user_Id: 1,
             status: 1,
-            sponsor_Id: "",
+            sponsor_Id: 0,
             joining_date: new Date()
         });
         const single_leg_rank = [];
