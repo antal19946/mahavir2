@@ -173,19 +173,19 @@ class user {
       const { name, email, mobile, password, sponsor,user_name } = body;
       const velidUserName = await this.generateUserName(user_name);
       console.log(velidUserName)
-      const isEmail = await is_email_required.value=="yes"? this.isEmail(email):{status:true};
-      const isMobile = await is_mobile_required.value=="yes"? this.isMobile(mobile):{status:true};
+      const isEmail =  this.isEmail(email);
+      const isMobile =  this.isMobile(mobile);
       const sponsor_Data = await this.sponsor(sponsor);
       const isexist = await UserData.findOne({ user_name: velidUserName.userName });
       const isStrongPassword =is_password_required.value=="yes"? await this.generatePassword(password):{status:true};
       const total_users = await UserData.find().count()
-      if (!isMobile.status) {
+      if (isMobile.status === false) {
         return isMobile
       }
-      if (!isEmail.status) {
+      if (isEmail.status === false) {
         return isEmail
       }
-      if (!velidUserName) {
+      if (!velidUserName.status) {
         return { status: false, message: "please enter valid username" }
       }
       if (!isStrongPassword.status) {
@@ -202,7 +202,7 @@ class user {
         ? isMobile
         : !isEmail.status
           ? isEmail
-          : !velidUserName
+          : !velidUserName.status
             ? { status: false, message: "please enter valid username" }
             : !isStrongPassword.status
               ? isStrongPassword

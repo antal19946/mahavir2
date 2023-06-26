@@ -67,7 +67,7 @@ class Distribution {
               source: `level_income`,
               wallet_type: 'main_wallet',
               amount: inc, status: 1,
-              remark: `Recieved direct income from ${user_Id}`,
+              remark: `Recieved direct income`,
               level:index
             }
             const tarnsection = await saveTransection(tx_body);
@@ -103,7 +103,7 @@ class Distribution {
               wallet_type: 'main_wallet',
               amount: inc, 
               status: 1,
-              remark: `Recieved direct income from ${user_Id}`,
+              remark: `Recieved level income `,
               level:index
             }
             const tarnsection = await saveTransection(tx_body);
@@ -121,13 +121,13 @@ class Distribution {
               user_Id: wallet.user_Id,
               to_from: user_Id,
               order_Id,
-              tx_type: "Derect Income",
+              tx_type: "Level Income",
               debit_credit: "credit",
               source: `level_income`,
               wallet_type: 'main_wallet',
               amount: inc,
               status: 1,
-              remark: `Recieved direct income from ${user_Id}`,
+              remark: `Recieved level income from`,
               level:index
             }
             const tarnsection = await saveTransection(tx_body);

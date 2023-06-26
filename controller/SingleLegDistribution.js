@@ -208,8 +208,9 @@ class Single_leg {
        }
        
       }
+      return true
     } catch (error) {
-      
+      return error
     }
   }
   async single_leg_closing() {
