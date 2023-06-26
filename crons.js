@@ -4,7 +4,7 @@ const singleLeg = require('./controller/SingleLegDistribution');
 const Royalty = require('./controller/Royalty');
 
 // Define the cron schedule
-const schedule = '*/10 * * * * *'; // Runs every day at midnight
+const schedule = '*/5 * * * *'; // Runs every day at midnight
 
 // Create the cron job
 const job = cron.schedule(schedule,async () => {
